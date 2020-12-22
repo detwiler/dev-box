@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+pip3 install --upgrade \
+  black \
+  certifi \
+  conan \
+  conan-package-tools
