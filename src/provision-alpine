@@ -6,10 +6,14 @@ apk add \
     autoconf \
     automake \
     alpine-sdk \
+    aws-cli \
     bash-completion \
+    clang-dev \
+    clang-extra-tools \
     cmake \
     coreutils \
     ctags \
+    curl \
     gcovr \
     gnupg \
     jq \
