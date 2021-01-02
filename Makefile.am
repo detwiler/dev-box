@@ -1,15 +1,18 @@
 # Makefile.am
 
-SUBDIRS = src
+SUBDIRS = provision
 
 gvg_version = $(top_srcdir)/.version
 pkg_release = $(PACKAGE)-release
+vagrantfile = Vagrantfile
 
 ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 
 BUILT_SOURCES = $(gvg_version)
 
 pkgdata_DATA = $(pkg_release)
+
+pkgbox_DATA = $(vagrantfile)
 
 CLEANFILES = $(gvg_version) \
 	     $(pkg_release)
