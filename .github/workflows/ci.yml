@@ -24,8 +24,8 @@ jobs:
             vm-box-name: ubuntu2010
 
     env:
+      }EBIAN_FRONTEND: noninteractive
       USER: ${{ github.repository_owner }}
-      DEBIAN_FRONTEND: noninteractive
       VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
       VIM_YCM_REF: ${{ matrix.vim-ycm-ref }}
       VM_BOX_NAME: ${{ matrix.vm-box-name }}
@@ -37,7 +37,7 @@ jobs:
           case $os_id in
               alpine) apk add git;;
               fedora) dnf -y install git-core which;;
-              ubuntu) apt-get -y install git;;
+              ubuntu) apt-get -y update && apt-get -y install git;;
           esac
 
       - name: Checkout
