@@ -54,7 +54,6 @@ jobs:
 
       - name: Bootstrap
         run: ./bootstrap
-        env:
 
       - name: Configure
         run: ./configure --datarootdir=$RUNNER_TEMP
