@@ -25,6 +25,8 @@ jobs:
 
     env:
       DEBIAN_FRONTEND: noninteractive
+      GNULIB_SRCDIR: $HOME/.local/share/gnulib
+      GNULIB_URL: 'https://github.com/coreutils/gnulib.git'
       USER: ${{ github.repository_owner }}
       VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
       VIM_YCM_REF: ${{ matrix.vim-ycm-ref }}
@@ -35,7 +37,7 @@ jobs:
         run: |
           os_id=`sed -ne 's/^ID=//p' /etc/os-release`
           case $os_id in
-              alpine) apk add git;;
+              alpine) apk add git tar;;
               fedora) dnf -y install git-core which;;
               ubuntu) apt-get -y update && apt-get -y install git;;
           esac
@@ -49,17 +51,29 @@ jobs:
       - name: Fetch Tags
         run: git fetch --force --tags
 
-      - name: Cache Gnulib Submodule
+      - name: Cache Gnulib Repository
+        id: cache-gnulib
         uses: actions/cache@v2
         env:
           cache-name: cache-gnulib
         with:
-          path: .gnulib
+          path: ${{ env.GNULIB_SRCDIR }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.git/modules/gnulib/refs/heads/master') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+
+      - name: Clone Gnulib Repository
+        id: clone-gnulib
+        if: steps.cache-gnulib.cache-hit != 'true'
+        run: git clone $GNULIB_URL $GNULIB_SRCDIR
+
+      - name: Fetch Upstream Gnulib Repository
+        if: steps.clone-gnulib.outcome == 'skipped'
+        run: |
+          cd $GNULIB_SRCDIR
+          git pull --ff-only
 
       - name: Bootstrap
         run: ./bootstrap --install-prereqs
