@@ -51,15 +51,6 @@ jobs:
       - name: Fetch Tags
         run: git fetch --force --tags
 
-      - name: Configure Gnulib Cache Key
-        run: |
-          if [ -d $GNULIB_SRCDIR ]; then
-              cd $GNULIB_SRCDIR
-              echo "GNULIB_CACHE_KEY=`git rev-parse HEAD`" >>$GITHUB_ENV
-          else
-              echo "GNULIB_CACHE_KEY=none" >>$GITHUB_ENV
-          fi
-
       - name: Cache Gnulib Repository
         id: cache-gnulib
         uses: actions/cache@v2
@@ -72,19 +63,15 @@ jobs:
             ${{ runner.os }}-${{ env.cache-name }}-
             ${{ runner.os }}-
 
-      - name: Clone Gnulib Repository
-        id: clone-gnulib
-        if: steps.cache-gnulib.cache-hit != 'true'
-        run: |
-          git clone $GNULIB_URL $GNULIB_SRCDIR
-          cd $GNULIB_SRCDIR
-          echo "GNULIB_CACHE_KEY=`git rev-parse HEAD`" >>$GITHUB_ENV
-
       - name: Fetch Upstream Gnulib Repository
-        if: steps.clone-gnulib.outcome == 'skipped'
         run: |
+          if [ -d $GNULIB_SRCDIR ]; then
+              cd $GNULIB_SRCDIR
+              git pull --ff-only
+          else
+              git clone $GNULIB_URL $GNULIB_SRCDIR
+          fi
           cd $GNULIB_SRCDIR
-          git pull --ff-only
           echo "GNULIB_CACHE_KEY=`git rev-parse HEAD`" >>$GITHUB_ENV
 
       - name: Bootstrap
