@@ -25,7 +25,7 @@ jobs:
 
     env:
       DEBIAN_FRONTEND: noninteractive
-      GNULIB_SRCDIR: $RUNNER_TEMP/.local/share/gnulib
+      GNULIB_SRCDIR: $RUNNER_TEMP/gnulib
       GNULIB_URL: 'https://github.com/coreutils/gnulib.git'
       USER: ${{ github.repository_owner }}
       VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
