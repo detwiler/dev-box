@@ -58,7 +58,7 @@ jobs:
           cache-name: cache-gnulib
         with:
           path: ${{ env.GNULIB_SRCDIR }}
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles(format('{0}/{1}', env.GNULIB_SRCDIR, '.git/refs/heads/master')) }}
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('.git/refs/heads/master') }}
           restore-keys: |
             ${{ runner.os }}-${{ env.cache-name }}-
             ${{ runner.os }}-
