@@ -1,0 +1,57 @@
+#! /usr/bin/env bash
+
+dnf --assumeyes groupinstall \
+    c-development \
+    development-tools \
+    fedora-packager \
+    rpm-development-tools
+
+dnf --assumeyes install \
+    awscli \
+    bash-completion \
+    bind-utils \
+    black \
+    can-utils \
+    clang-devel \
+    clang-tools-extra \
+    cmake \
+    curl \
+    gcovr \
+    htop \
+    jq \
+    kernel-modules-extra \
+    libcxx-devel \
+    libcxxabi-devel \
+    libpcap-devel \
+    man-pages \
+    nmap-ncat \
+    python3-bottle \
+    python3-certifi \
+    python3-colorama \
+    python3-coverage \
+    python3-dateutil \
+    python3-deprecation \
+    python3-devel \
+    python3-distro \
+    python3-fasteners \
+    python3-future \
+    python3-jinja2 \
+    python3-jwt \
+    python3-node-semver \
+    python3-nose \
+    python3-patch-ng \
+    python3-pip \
+    python3-pluginbase \
+    python3-pygments \
+    python3-pyyaml \
+    python3-requests \
+    python3-setuptools \
+    python3-six \
+    python3-tabulate \
+    python3-tqdm \
+    python3-urllib3 \
+    python3-wheel \
+    telnet \
+    vim-enhanced \
+    wget \
+    zlib-devel

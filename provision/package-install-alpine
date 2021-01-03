@@ -1,0 +1,46 @@
+#! /bin/sh
+
+apk add \
+    alpine-sdk \
+    autoconf \
+    automake \
+    aws-cli \
+    bash-completion \
+    clang-dev \
+    clang-extra-tools \
+    cmake \
+    coreutils \
+    ctags \
+    curl \
+    gcovr \
+    gnupg \
+    jq \
+    libffi-dev \
+    libtool \
+    libxslt-dev \
+    linux-headers \
+    openssl-dev \
+    py3-bottle \
+    py3-certifi \
+    py3-colorama \
+    py3-coverage \
+    py3-dateutil \
+    py3-distro \
+    py3-fasteners \
+    py3-future \
+    py3-jinja2 \
+    py3-jwt \
+    py3-nose \
+    py3-pip \
+    py3-pygments \
+    py3-requests \
+    py3-setuptools \
+    py3-six \
+    py3-tqdm \
+    py3-urllib3 \
+    py3-wheel \
+    py3-yaml \
+    python3-dev \
+    rsync \
+    vim \
+    wget
