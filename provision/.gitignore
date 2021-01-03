@@ -1,4 +1,5 @@
 # .gitignore
 
+/envconf-install
 /package-install
 /package-upgrade

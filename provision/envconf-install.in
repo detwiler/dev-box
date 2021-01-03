@@ -1,0 +1,40 @@
+#! /usr/bin/env bash
+
+set -euo pipefail
+
+function get_tarball_name()
+{
+    curl --silent '@ENVCONF_RELEASE_URL@' \
+        | jq --exit-status --raw-output --from-file <(cat <<- EOF
+		.assets | map(select(.content_type == "application/gzip"))[].name
+	EOF
+	)
+}
+
+function get_download_url()
+{
+    local name=$1
+    curl --silent '@ENVCONF_RELEASE_URL@' \
+        | jq --exit-status --raw-output --from-file <(cat <<- EOF
+		.assets | map(select(.name == "$name"))[].browser_download_url
+	EOF
+	)
+}
+
+tarball=$(get_tarball_name)
+download_url=$(get_download_url $tarball)
+tmpdir=$(mktemp --directory --tmpdir)
+trap "rm -rf $tmpdir" ERR EXIT
+
+top_srcdir="$tmpdir/${tarball%.tar.gz}"
+
+curl --silent --location "$download_url" | \
+    tar --directory $tmpdir --extract --gzip --file -
+
+pushd $top_srcdir
+./configure --sysconfdir=$HOME/.config
+make
+make install
+popd
+
+vim -es -u $HOME/.config/vim/vimrc -i NONE -c PlugInstall -c qa

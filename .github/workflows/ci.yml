@@ -49,6 +49,18 @@ jobs:
       - name: Fetch Tags
         run: git fetch --force --tags
 
+      - name: Cache Gnulib Submodule
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-gnulib
+        with:
+          path: .gnulib
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.git/modules/gnulib/refs/heads/master') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Install Prerequisites
         run: build-aux/install-prereqs
 
@@ -70,7 +82,10 @@ jobs:
       - name: Provision Pip Install Test
         run: provision/pip-install
 
-      - name: Test
+      - name: Provision Envconf Install Test
+        run: provision/envconf-install
+
+      - name: Distribution Test
         run: make distcheck
 
       - name: Install

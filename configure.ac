@@ -31,6 +31,18 @@ QH_VAR_ENSURE([VM_CPUS],
               [Number of CPUs dedicated to VM],
               [2])
 
+QH_VAR_ENSURE([ENVCONF_RELEASE_URL],
+              [GitHub API URL for envconf releases],
+              ['https://api.github.com/repos/detwiler/envconf/releases/latest'])
+
+QH_VAR_ENSURE([VIM_YCM_OWNER],
+              [Github owner for YouCompleteMe],
+              [ycm-core])
+
+QH_VAR_ENSURE([VIM_YCM_REF],
+              [Git reference for YouCompleteMe],
+              [master])
+
 AS_CASE([$VM_BOX_NAME],
         [alpine*], [VM_DISTRO=alpine],
         [fedora*|*-cloud-base], [VM_DISTRO=fedora],
@@ -40,5 +52,6 @@ AC_SUBST([VM_DISTRO])
 AC_CONFIG_FILES([Makefile
                  Vagrantfile
                  provision/Makefile
+                 provision/envconf-install
                  ])
 AC_OUTPUT

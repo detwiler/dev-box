@@ -4,6 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get --assume-yes install \
     autoconf \
     automake \
+    awscli \
     bash-completion \
     black \
     build-essential \
