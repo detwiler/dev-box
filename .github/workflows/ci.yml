@@ -33,7 +33,7 @@ jobs:
       VM_BOX_NAME: ${{ matrix.vm-box-name }}
 
     steps:
-      - name: Install Git
+      - name: Install Pre-Checkout Tools
         run: |
           os_id=`sed -ne 's/^ID=//p' /etc/os-release`
           case $os_id in
