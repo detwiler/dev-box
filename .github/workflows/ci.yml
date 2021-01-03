@@ -61,17 +61,20 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Install Prerequisites
-        run: build-aux/install-prereqs
-
       - name: Bootstrap
-        run: ./bootstrap
+        run: ./bootstrap --install-prereqs
 
       - name: Configure
         run: ./configure --datarootdir=$RUNNER_TEMP
 
       - name: Build
         run: make
+
+      - name: Distribution Test
+        run: make distcheck
+
+      - name: Install
+        run: make install
 
       - name: Provision Package Upgrade Test
         run: provision/package-upgrade
@@ -83,13 +86,9 @@ jobs:
         run: provision/pip-install
 
       - name: Provision Envconf Install Test
-        run: provision/envconf-install
-
-      - name: Distribution Test
-        run: make distcheck
-
-      - name: Install
-        run: make install
+        run: |
+          chmod a+x provision/envconf-install
+          provision/envconf-install
 
       - name: Configure Version
         run: echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
