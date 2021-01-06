@@ -13,8 +13,10 @@ apk add \
     ctags \
     curl \
     gcovr \
+    git-diff-highlight \
     gnupg \
     jq \
+    less \
     libffi-dev \
     libtool \
     libxslt-dev \
