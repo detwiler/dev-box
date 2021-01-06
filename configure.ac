@@ -15,25 +15,21 @@ AM_SILENT_RULES([yes])
 
 AC_SUBST([pkgboxdir], ["\$(pkgdatadir)/\$(VM_BOX_OWNER)/\$(VM_BOX_NAME)"])
 
-QH_VAR_ENSURE([VM_BOX_OWNER],
-              [VM box owner],
-              [generic])
-
-QH_VAR_ENSURE([VM_BOX_NAME],
-              [VM box name],
-              [fedora33])
-
-QH_VAR_ENSURE([VM_MEMORY],
-              [Memory (MiB) dedicated to VM],
-              [4096])
-
-QH_VAR_ENSURE([VM_CPUS],
-              [Number of CPUs dedicated to VM],
-              [2])
+QH_VAR_ENSURE([CONAN_USERNAME],
+              [User name required by conan-package-tools],
+              [$USER])
 
 QH_VAR_ENSURE([ENVCONF_RELEASE_URL],
               [GitHub API URL for envconf releases],
               ['https://api.github.com/repos/detwiler/envconf/releases/latest'])
+
+QH_VAR_ENSURE([GIT_AUTHOR_NAME],
+              [human-readable name for git author],
+              [$USER])
+
+QH_VAR_ENSURE([GIT_AUTHOR_EMAIL],
+              [git author email],
+              [$USER@$HOSTNAME])
 
 QH_VAR_ENSURE([VIM_YCM_OWNER],
               [Github owner for YouCompleteMe],
@@ -42,6 +38,22 @@ QH_VAR_ENSURE([VIM_YCM_OWNER],
 QH_VAR_ENSURE([VIM_YCM_REF],
               [Git reference for YouCompleteMe],
               [master])
+
+QH_VAR_ENSURE([VM_BOX_OWNER],
+              [VM box owner],
+              [generic])
+
+QH_VAR_ENSURE([VM_BOX_NAME],
+              [VM box name],
+              [fedora33])
+
+QH_VAR_ENSURE([VM_CPUS],
+              [Number of CPUs dedicated to VM],
+              [2])
+
+QH_VAR_ENSURE([VM_MEMORY],
+              [Memory (MiB) dedicated to VM],
+              [4096])
 
 AS_CASE([$VM_BOX_NAME],
         [alpine*], [VM_DISTRO=alpine],

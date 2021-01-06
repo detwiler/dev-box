@@ -12,9 +12,14 @@ apk add \
     coreutils \
     ctags \
     curl \
+    findutils \
     gcovr \
+    git-diff-highlight \
     gnupg \
+    grep \
+    gzip \
     jq \
+    less \
     libffi-dev \
     libtool \
     libxslt-dev \
