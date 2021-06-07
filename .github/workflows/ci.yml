@@ -11,32 +11,26 @@ jobs:
       matrix:
         include:
           - image: alpine:latest
-            vim-ycm-owner: detwiler
-            vim-ycm-ref: llvm-10
-            vm-box-name: alpine312
+            vm-box-name: alpine
           - image: fedora:latest
-            vim-ycm-owner: ycm-core
-            vim-ycm-ref: master
-            vm-box-name: fedora33
+            vm-box-name: fedora
           - image: ubuntu:rolling
-            vim-ycm-owner: ycm-core
-            vim-ycm-ref: master
-            vm-box-name: ubuntu2010
+            vm-box-name: ubuntu
+          - image: ubuntu:latest
+            vm-box-name: ubuntu
 
     env:
       DEBIAN_FRONTEND: noninteractive
       GNULIB_SRCDIR: "$HOME/.gnulib"
       GNULIB_URL: 'https://github.com/coreutils/gnulib.git'
       USER: ${{ github.repository_owner }}
-      VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
-      VIM_YCM_REF: ${{ matrix.vim-ycm-ref }}
       VM_BOX_NAME: ${{ matrix.vm-box-name }}
 
     steps:
       - name: Install Pre-Checkout Tools
         run: |
-          os_id=`sed -ne 's/^ID=//p' /etc/os-release`
-          case $os_id in
+          . /etc/os-release
+          case $ID in
               alpine) apk add git tar;;
               fedora) dnf -y install git-core which;;
               ubuntu) apt-get -y update && apt-get -y install git;;
