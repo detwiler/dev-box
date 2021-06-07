@@ -1,16 +1,26 @@
 #!/usr/bin/env bash
 
+source /etc/os-release
+
+case $VERSION_ID in
+    18.04) clang=clang-10; clangd=clangd-10;;
+    *) clang=clang; clangd=clangd;;
+esac
+
+echo "version id: $VERSION_ID"
+echo "clang: $clang"
+echo "clangd: $clangd"
+
 export DEBIAN_FRONTEND=noninteractive
 apt-get --assume-yes install \
     autoconf \
     automake \
     awscli \
     bash-completion \
-    black \
     build-essential \
     can-utils \
-    clang \
-    clangd \
+    $clang \
+    $clangd \
     clang-tidy \
     cmake \
     curl \

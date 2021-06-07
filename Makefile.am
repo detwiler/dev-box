@@ -10,9 +10,8 @@ ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 
 BUILT_SOURCES = $(gvg_version)
 
-pkgdata_DATA = $(pkg_release)
-
-pkgbox_DATA = $(vagrantfile)
+pkgbox_DATA = $(pkg_release) \
+	      $(vagrantfile)
 
 CLEANFILES = $(gvg_version) \
 	     $(pkg_release)

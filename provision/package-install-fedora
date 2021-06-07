@@ -10,7 +10,6 @@ dnf --assumeyes install \
     awscli \
     bash-completion \
     bind-utils \
-    black \
     can-utils \
     clang-devel \
     clang-tools-extra \
