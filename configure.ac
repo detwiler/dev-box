@@ -31,14 +31,6 @@ QH_VAR_ENSURE([GIT_AUTHOR_EMAIL],
               [git author email],
               [$USER@$HOSTNAME])
 
-QH_VAR_ENSURE([VIM_YCM_OWNER],
-              [Github owner for YouCompleteMe],
-              [ycm-core])
-
-QH_VAR_ENSURE([VIM_YCM_REF],
-              [Git reference for YouCompleteMe],
-              [master])
-
 QH_VAR_ENSURE([VM_BOX_OWNER],
               [VM box owner],
               [generic])
