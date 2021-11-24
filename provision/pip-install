@@ -2,5 +2,8 @@
 
 python3 -m pip install --upgrade \
     black \
-    conan \
-    conan-package-tools
+    conan
+
+python3 -m pip install --no-deps --upgrade \
+    conan-package-tools \
+    tabulate
