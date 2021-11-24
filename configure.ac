@@ -31,6 +31,14 @@ QH_VAR_ENSURE([GIT_AUTHOR_EMAIL],
               [git author email],
               [$USER@$HOSTNAME])
 
+QH_VAR_ENSURE([SSH_PRIVATE_KEY_PATH],
+              [SSH private key path],
+              ['~/.ssh/id_ed25519'])
+
+QH_VAR_ENSURE([SSH_PUBLIC_KEY_PATH],
+              [SSH public key path],
+              ['~/.ssh/id_ed25519.pub'])
+
 QH_VAR_ENSURE([VM_BOX_OWNER],
               [VM box owner],
               [generic])
