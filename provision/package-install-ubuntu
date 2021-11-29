@@ -7,10 +7,6 @@ case $VERSION_ID in
     *) clang=clang; clangd=clangd;;
 esac
 
-echo "version id: $VERSION_ID"
-echo "clang: $clang"
-echo "clangd: $clangd"
-
 export DEBIAN_FRONTEND=noninteractive
 apt-get --assume-yes install \
     autoconf \
@@ -23,13 +19,20 @@ apt-get --assume-yes install \
     $clangd \
     clang-tidy \
     cmake \
+    coreutils \
+    cscope \
     curl \
+    dos2unix \
     exuberant-ctags \
+    file \
     gcovr \
+    gpg \
+    gzip \
     jq \
     libc++-dev \
     libc++abi-dev \
     libtool \
+    minicom \
     python3-bottle \
     python3-certifi \
     python3-colorama \
@@ -54,6 +57,8 @@ apt-get --assume-yes install \
     python3-urllib3 \
     python3-wheel \
     python3-yaml \
+    sharutils \
     software-properties-common \
     vim \
-    wget
+    wget \
+    xxd

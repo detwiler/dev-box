@@ -30,7 +30,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "provision/package-upgrade"
   config.vm.provision "shell", path: "provision/package-install"
   config.vm.provision "shell", path: "provision/pip-install"
-  config.vm.provision "shell", path: "provision/envconf-install", privileged: false,
+  config.vm.provision "shell", path: "provision/envconf-install", privileged: false
+  config.vm.provision "shell", path: "provision/detutils-install", privileged: false,
     env:
     {
       "CONAN_USERNAME": "@CONAN_USERNAME@",

@@ -1,5 +1,6 @@
 # .gitignore
 
+/detutils-install
 /envconf-install
 /package-install
 /package-upgrade

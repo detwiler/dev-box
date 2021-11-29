@@ -70,7 +70,7 @@ jobs:
           fi
 
       - name: Bootstrap
-        run: ./bootstrap --install-prereqs
+        run: ./bootstrap --install-buildreqs
 
       - name: Configure
         run: ./configure --datarootdir=$RUNNER_TEMP
@@ -98,8 +98,15 @@ jobs:
           chmod a+x provision/envconf-install
           provision/envconf-install
 
-      - name: Configure Version
-        run: echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
+      - name: Provision Detutils Install Test
+        run: |
+          chmod a+x provision/detutils-install
+          provision/detutils-install
+
+      - name: Configure Project Name and Version
+        run: |
+          echo "PROJECT_NAME=`cat .package-name`" >>$GITHUB_ENV
+          echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
       - name: Upload Distribution Artifacts
         uses: actions/upload-artifact@v2
@@ -107,7 +114,8 @@ jobs:
           name: distribution-artifacts
           if-no-files-found: error
           path: |
-            dev-vms-${{ env.PROJECT_VERSION }}.tar.gz
+            ${{ env.PROJECT_NAME }}-${{ env.PROJECT_VERSION }}.tar.gz
+            .package-name
             .version
 
   create-release:
@@ -122,8 +130,10 @@ jobs:
         with:
           name: distribution-artifacts
 
-      - name: Configure Version
-        run: echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
+      - name: Configure Project Name and Version
+        run: |
+          echo "PROJECT_NAME=`cat .package-name`" >>$GITHUB_ENV
+          echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
       - name: Create Release
         id: create-release
@@ -141,6 +151,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: dev-vms-${{ env.PROJECT_VERSION }}.tar.gz
-          asset_name: dev-vms-${{ env.PROJECT_VERSION }}.tar.gz
+          asset_path: ${{ env.PROJECT_NAME }}-${{ env.PROJECT_VERSION }}.tar.gz
+          asset_name: ${{ env.PROJECT_NAME }}-${{ env.PROJECT_VERSION }}.tar.gz
           asset_content_type: application/gzip

@@ -14,8 +14,14 @@ dnf --assumeyes install \
     clang-devel \
     clang-tools-extra \
     cmake \
+    coreutils \
+    cscope \
     curl \
+    dos2unix \
+    file \
     gcovr \
+    gnupg2 \
+    gzip \
     htop \
     jq \
     kernel-modules-extra \
@@ -23,6 +29,7 @@ dnf --assumeyes install \
     libcxxabi-devel \
     libpcap-devel \
     man-pages \
+    minicom \
     nmap-ncat \
     python3-bottle \
     python3-certifi \
@@ -50,6 +57,7 @@ dnf --assumeyes install \
     python3-tqdm \
     python3-urllib3 \
     python3-wheel \
+    sharutils \
     telnet \
     vim-enhanced \
     wget \
