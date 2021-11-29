@@ -19,6 +19,10 @@ QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
               [$USER])
 
+QH_VAR_ENSURE([DETUTILS_RELEASE_URL],
+              [GitHub API URL for detutils releases],
+              ['https://api.github.com/repos/detwiler/detutils/releases/latest'])
+
 QH_VAR_ENSURE([ENVCONF_RELEASE_URL],
               [GitHub API URL for envconf releases],
               ['https://api.github.com/repos/detwiler/envconf/releases/latest'])
@@ -64,6 +68,7 @@ AC_SUBST([VM_DISTRO])
 AC_CONFIG_FILES([Makefile
                  Vagrantfile
                  provision/Makefile
+                 provision/detutils-install
                  provision/envconf-install
                  ])
 AC_OUTPUT
