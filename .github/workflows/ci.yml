@@ -70,7 +70,7 @@ jobs:
           fi
 
       - name: Bootstrap
-        run: ./bootstrap --install-prereqs
+        run: ./bootstrap --install-buildreqs
 
       - name: Configure
         run: ./configure --datarootdir=$RUNNER_TEMP
