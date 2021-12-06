@@ -12,9 +12,11 @@ static_scripts = pip-install
 dist_provision_SCRIPTS = $(static_scripts)
 
 extra_static_sources = package-install-alpine \
+		       package-install-centos \
 		       package-install-fedora \
 		       package-install-ubuntu \
 		       package-upgrade-alpine \
+		       package-upgrade-centos \
 		       package-upgrade-fedora \
 		       package-upgrade-ubuntu
 

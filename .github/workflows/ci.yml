@@ -12,6 +12,10 @@ jobs:
         include:
           - image: alpine:latest
             vm-box-name: alpine
+          - image: centos:latest
+            vm-box-name: centos
+          - image: quay.io/centos/centos:stream9
+            vm-box-name: centos
           - image: fedora:latest
             vm-box-name: fedora
           - image: ubuntu:rolling
@@ -32,7 +36,7 @@ jobs:
           . /etc/os-release
           case $ID in
               alpine) apk add git tar;;
-              fedora) dnf -y install git-core which;;
+              centos|fedora) dnf -y upgrade && dnf -y install dnf-plugins-core git-core which;;
               ubuntu) apt-get -y update && apt-get -y install git;;
           esac
 

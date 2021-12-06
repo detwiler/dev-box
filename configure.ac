@@ -61,6 +61,7 @@ QH_VAR_ENSURE([VM_MEMORY],
 
 AS_CASE([$VM_BOX_NAME],
         [alpine*], [VM_DISTRO=alpine],
+        [centos*|stream*], [VM_DISTRO=centos],
         [fedora*|*-cloud-base], [VM_DISTRO=fedora],
         [ubuntu*], [VM_DISTRO=ubuntu])
 AC_SUBST([VM_DISTRO])
