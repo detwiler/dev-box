@@ -96,6 +96,6 @@ dnf --assumeyes --refresh install $extra_repos
 
 dnf --assumeyes --refresh groupinstall $package_groups
 
-dnf --assumeyes --refresh install $packages
+dnf --assumeyes --refresh --allowerasing install $packages
 
 dnf --assumeyes --refresh install $python_packages
