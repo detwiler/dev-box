@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "file", source: "@SSH_PUBLIC_KEY_PATH@", destination: "~/.ssh/authorized_keys"
 
   # disable default synced folder
-  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.synced_folder ".", "@VM_SYNCED_FOLDER_MOUNT@", disabled: true
 
   # vagrant-hostmanager plugin
   if Vagrant.has_plugin?("vagrant-hostmanager")
