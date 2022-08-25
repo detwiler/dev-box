@@ -8,11 +8,15 @@ case $VERSION_ID in
     8)
         enable_repos=powertools
         kernel_devel=kernel-devel
+        kernel_srpm_macros=''
+        kernel_tools_libs_devel=''
         python_nose=python3-nose
         ;;
     9)
         enable_repos=crb
         kernel_devel=kernel-devel-matched
+        kernel_srpm_macros=kernel-srpm-macros
+        kernel_tools_libs_devel=kernel-tools-libs-devel
         python_nose=python3-nose2
         ;;
 esac
@@ -52,8 +56,9 @@ kernel-headers
 kernel-modules
 kernel-modules-extra
 kernel-rpm-macros
-kernel-srpm-macros
-kernel-tools-libs-devel
+$kernel_srpm_macros
+kernel-tools
+$kernel_tools_libs_devel
 libpcap-devel
 man-pages
 minicom
