@@ -7,10 +7,12 @@ source /etc/os-release
 case $VERSION_ID in
     8)
         enable_repos=powertools
+        kernel_devel=kernel-devel
         python_nose=python3-nose
         ;;
     9)
         enable_repos=crb
+        kernel_devel=kernel-devel-matched
         python_nose=python3-nose2
         ;;
 esac
@@ -28,7 +30,7 @@ rpm-development-tools
 standard
 '
 
-packages='
+packages="
 bash-completion
 bind-utils
 clang-devel
@@ -44,7 +46,7 @@ gzip
 htop
 jq
 kernel-abi-stablelists
-kernel-devel-matched
+$kernel_devel
 kernel-doc
 kernel-headers
 kernel-modules
@@ -62,7 +64,7 @@ telnet
 vim-enhanced
 wget
 zlib-devel
-'
+"
 
 python_packages="
 python3-certifi
