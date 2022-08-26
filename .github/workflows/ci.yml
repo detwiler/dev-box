@@ -18,9 +18,11 @@ jobs:
             vm-box-name: centos
           - image: fedora:latest
             vm-box-name: fedora
-          - image: ubuntu:rolling
+          - image: ubuntu:20.04
             vm-box-name: ubuntu
           - image: ubuntu:latest
+            vm-box-name: ubuntu
+          - image: ubuntu:rolling
             vm-box-name: ubuntu
 
     env:
