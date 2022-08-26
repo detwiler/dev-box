@@ -18,14 +18,16 @@ jobs:
             vm-box-name: centos
           - image: fedora:latest
             vm-box-name: fedora
-          - image: ubuntu:rolling
+          - image: ubuntu:20.04
             vm-box-name: ubuntu
           - image: ubuntu:latest
+            vm-box-name: ubuntu
+          - image: ubuntu:rolling
             vm-box-name: ubuntu
 
     env:
       DEBIAN_FRONTEND: noninteractive
-      GNULIB_SRCDIR: "$HOME/.gnulib"
+      GNULIB_REFDIR: "$HOME/.gnulib"
       GNULIB_URL: 'https://github.com/coreutils/gnulib.git'
       USER: ${{ github.repository_owner }}
       VM_BOX_NAME: ${{ matrix.vm-box-name }}
@@ -60,7 +62,7 @@ jobs:
         env:
           cache-name: cache-gnulib
         with:
-          path: ${{ env.GNULIB_SRCDIR }}
+          path: ${{ env.GNULIB_REFDIR }}
           key: ${{ runner.os }}-${{ env.cache-name }}-${{ env.GNULIB_CACHE_KEY }}
           restore-keys: |
             ${{ runner.os }}-${{ env.cache-name }}-
@@ -68,11 +70,11 @@ jobs:
       - name: Fetch Upstream Gnulib Repository
         if: steps.cache-gnulib.outputs.cache-hit != 'true'
         run: |
-          if [ -d $GNULIB_SRCDIR ]; then
-              cd $GNULIB_SRCDIR
+          if [ -d $GNULIB_REFDIR ]; then
+              cd $GNULIB_REFDIR
               git pull --ff-only
           else
-              git clone $GNULIB_URL $GNULIB_SRCDIR
+              git clone $GNULIB_URL $GNULIB_REFDIR
           fi
 
       - name: Bootstrap

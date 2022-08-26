@@ -36,5 +36,3 @@ pushd $top_srcdir
 make
 make install
 popd
-
-vim -es -u $HOME/.config/vim/vimrc -i NONE -c PlugInstall -c qa

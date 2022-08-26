@@ -1,6 +1,6 @@
-[![ci](https://github.com/detwiler/dev-vms/workflows/ci/badge.svg)](https://github.com/detwiler/dev-vms/actions)
+[![ci](https://github.com/detwiler/dev-box/workflows/ci/badge.svg)](https://github.com/detwiler/dev-box/actions)
 
-# dev-vms
+# dev-box
 
 Development Environment Virtual Machines
 
