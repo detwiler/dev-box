@@ -13,7 +13,7 @@ AC_CONFIG_SRCDIR([Vagrantfile.in])
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror foreign])
 AM_SILENT_RULES([yes])
 
-AC_SUBST([pkgboxdir], ["\$(pkgdatadir)/\$(VM_BOX_OWNER)/\$(VM_BOX_NAME)"])
+AC_SUBST([pkgboxdir], ["\$(pkgdatadir)/\$(VM_BOX_OWNER)-\$(VM_BOX_NAME)"])
 
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
