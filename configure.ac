@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([dev-vms],
+AC_INIT([dev-box],
         [m4_esyscmd([build-aux/git-version-gen .tarball-version])],
         [mike@detwiler.io])
 

@@ -3,10 +3,10 @@
 /.package-name
 /.version
 /ChangeLog
-/dev-vms-release
+/dev-box-release
 
 # gnulib
-/.dev-vms-gnulib/
+/.dev-box-gnulib/
 /INSTALL
 
 # Vagrant
