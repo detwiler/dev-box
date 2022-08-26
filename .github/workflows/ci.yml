@@ -12,7 +12,7 @@ jobs:
         include:
           - image: alpine:latest
             vm-box-name: alpine
-          - image: centos:latest
+          - image: quay.io/centos/centos:stream8
             vm-box-name: centos
           - image: quay.io/centos/centos:stream9
             vm-box-name: centos
@@ -31,13 +31,13 @@ jobs:
       VM_BOX_NAME: ${{ matrix.vm-box-name }}
 
     steps:
-      - name: Install Pre-Checkout Tools
+      - name: Upgrade Packages
         run: |
           . /etc/os-release
           case $ID in
-              alpine) apk add git tar;;
-              centos|fedora) dnf -y upgrade && dnf -y install dnf-plugins-core git-core which;;
-              ubuntu) apt-get -y update && apt-get -y install git;;
+              alpine) apk update && apk upgrade && apk add git tar;;
+              centos|fedora) dnf -y --refresh upgrade && dnf -y install dnf-plugins-core git-core which;;
+              ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
           esac
 
       - name: Checkout
@@ -47,7 +47,9 @@ jobs:
 
       # see: https://github.com/actions/checkout/issues/290
       - name: Fetch Tags
-        run: git fetch --force --tags
+        run: |
+          git config --global --add safe.directory $(pwd)
+          git fetch --force --tags
 
       - name: Configure Gnulib Cache Key
         run: echo "GNULIB_CACHE_KEY=`git submodule status .gnulib | sed -re 's/^.([0-9,a-f]{1,}) .*$/\1/'`" >>$GITHUB_ENV

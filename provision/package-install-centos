@@ -1,96 +1,106 @@
 #! /usr/bin/env bash
 
+set -euo pipefail
+
 source /etc/os-release
 
 case $VERSION_ID in
     8)
-        epel_repo=powertools
-        epel_release=epel-release
-        epel_next_release=epel-next-release
-        htop=htop
-        pkgs_python='
-        python3-certifi
-        python3-colorama
-        python3-coverage
-        python3-dateutil
-        python3-devel
-        python3-distro
-        python3-fasteners
-        python3-future
-        python3-jinja2
-        python3-jwt
-        python3-nose
-        python3-pip
-        python3-pygments
-        python3-pyyaml
-        python3-requests
-        python3-setuptools
-        python3-six
-        python3-tabulate
-        python3-tqdm
-        python3-urllib3
-        python3-wheel
-        '
+        enable_repos=powertools
+        kernel_devel=kernel-devel
+        kernel_srpm_macros=''
+        kernel_tools_libs_devel=''
+        python_nose=python3-nose
         ;;
     9)
-        epel_repo=crb
-        epel_release='https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/Packages/e/epel-release-9-2.el9.noarch.rpm'
-        epel_next_release='https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/Packages/e/epel-next-release-9-2.el9.noarch.rpm'
-        htop=''
-        pkgs_python='
-        python3-dateutil
-        python3-devel
-        python3-distro
-        python3-jinja2
-        python3-pip
-        python3-pygments
-        python3-pyyaml
-        python3-requests
-        python3-setuptools
-        python3-six
-        python3-tqdm
-        python3-urllib3
-        python3-wheel
-        '
+        enable_repos=crb
+        kernel_devel=kernel-devel-matched
+        kernel_srpm_macros=kernel-srpm-macros
+        kernel_tools_libs_devel=kernel-tools-libs-devel
+        python_nose=python3-nose2
         ;;
 esac
 
-dnf --assumeyes config-manager --set-enabled $epel_repo
+extra_repos='
+epel-release
+epel-next-release
+'
 
-dnf --assumeyes install \
-    $epel_release \
-    $epel_next_release
+package_groups='
+container-management
+development
+fedora-packager
+rpm-development-tools
+standard
+'
 
-dnf --assumeyes groupinstall \
-    development \
-    fedora-packager \
-    rpm-development-tools
+packages="
+bash-completion
+bind-utils
+clang-devel
+clang-tools-extra
+cmake
+coreutils
+cscope
+curl
+dos2unix
+file
+gnupg2
+gzip
+htop
+jq
+kernel-abi-stablelists
+$kernel_devel
+kernel-doc
+kernel-headers
+kernel-modules
+kernel-modules-extra
+kernel-rpm-macros
+$kernel_srpm_macros
+kernel-tools
+$kernel_tools_libs_devel
+libpcap-devel
+man-pages
+minicom
+nmap-ncat
+podman-compose
+sharutils
+telnet
+vim-enhanced
+wget
+zlib-devel
+"
 
-dnf --assumeyes install --allowerasing \
-    bash-completion \
-    bind-utils \
-    clang-devel \
-    clang-tools-extra \
-    cmake \
-    coreutils \
-    cscope \
-    curl \
-    dos2unix \
-    file \
-    gnupg2 \
-    gzip \
-    $htop \
-    jq \
-    kernel-modules-extra \
-    libpcap-devel \
-    man-pages \
-    minicom \
-    nmap-ncat \
-    sharutils \
-    telnet \
-    vim-enhanced \
-    wget \
-    zlib-devel
+python_packages="
+python3-certifi
+python3-colorama
+python3-coverage
+python3-dateutil
+python3-devel
+python3-distro
+python3-fasteners
+python3-future
+python3-jinja2
+python3-jwt
+$python_nose
+python3-pip
+python3-pygments
+python3-pyyaml
+python3-requests
+python3-setuptools
+python3-six
+python3-tabulate
+python3-tqdm
+python3-urllib3
+python3-wheel
+"
 
-dnf --assumeyes install \
-    $pkgs_python
+dnf --assumeyes config-manager --set-enabled $enable_repos
+
+dnf --assumeyes --refresh install $extra_repos
+
+dnf --assumeyes --refresh groupinstall $package_groups
+
+dnf --assumeyes --refresh --allowerasing install $packages
+
+dnf --assumeyes --refresh install $python_packages

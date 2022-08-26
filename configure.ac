@@ -59,6 +59,10 @@ QH_VAR_ENSURE([VM_MEMORY],
               [Memory (MiB) dedicated to VM],
               [4096])
 
+QH_VAR_ENSURE([VM_SYNCED_FOLDER_MOUNT],
+              [Syncded folder guest mount point],
+              [/vagrant])
+
 AS_CASE([$VM_BOX_NAME],
         [alpine*], [VM_DISTRO=alpine],
         [centos*|stream*], [VM_DISTRO=centos],
