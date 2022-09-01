@@ -51,7 +51,7 @@ time
 traceroute
 tree
 unzip
-wget2
+wget
 debianutils
 xauth
 xz-utils
