@@ -12,12 +12,16 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([Vagrantfile.in])
 
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror foreign])
-AM_EXTRA_RECURSIVE_TARGETS([container-image])
 AM_SILENT_RULES([yes])
 
-AC_SUBST([pkgboxdir], ["\$(pkgdatadir)/\$(VM_BOX_OWNER)-\$(VM_BOX_NAME)"])
+AC_ARG_VAR([FLATPAK_SPAWN], [path to flatpak-spawn])
+AC_PATH_PROG([FLATPAK_SPAWN], [flatpak-spawn], [no],
+             [$PATH$PATH_SEPARATOR/usr/libexec/flatpak-xdg-utils])
+AM_CONDITIONAL([HAVE_FLATPAK_SPAWN], [test "x$FLATPAK_SPAWN" != xno])
+AM_COND_IF([HAVE_FLATPAK_SPAWN],
+           [AM_EXTRA_RECURSIVE_TARGETS([container-image])])
 
-QH_REQUIRE_PROG([FLATPAK_SPAWN], [flatpak-spawn], [path to flatpak-spawn])
+AC_SUBST([pkgboxdir], ["\$(pkgdatadir)/\$(VM_BOX_OWNER)-\$(VM_BOX_NAME)"])
 
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
@@ -44,7 +48,7 @@ QH_VAR_ENSURE([CONTAINER_REGISTRY],
 
 QH_VAR_ENSURE([REGISTRY_ACCOUNT],
               [Registry account],
-              [detwiler])
+              [$USER])
 
 QH_VAR_ENSURE([CONTAINER_REPO],
               [Container image repository],

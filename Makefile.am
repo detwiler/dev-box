@@ -35,12 +35,13 @@ $(pkg_name):
 $(pkg_release): $(gvg_version)
 	$(AM_V_GEN)echo "$(PACKAGE) release $(VERSION)" > $@-t && mv $@-t $@
 
+if HAVE_FLATPAK_SPAWN
 container-image-local: $(containerfile) Makefile
 	$(AM_V_GEN)$(FLATPAK_SPAWN) --host podman build --tag $(image_tag) .
 
-.PHONY: publish-image
 publish-image:
 	$(AM_V_GEN)$(FLATPAK_SPAWN) --host podman push $(image_tag)
+endif
 
 .PHONY: gen-ChangeLog
 gen-ChangeLog:
