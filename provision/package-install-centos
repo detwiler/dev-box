@@ -108,7 +108,6 @@ perl-generators
 perl-interpreter
 pesign
 python3-docutils
-system-sb-certs
 xmlto
 xz-devel
 zlib-devel

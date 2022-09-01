@@ -36,11 +36,12 @@ QH_VAR_ENSURE([CONTAINER_BASE_TAG],
               [stream9])
 
 AS_CASE([$CONTAINER_BASE_IMAGE],
-        [*alpine*], [CONTAINER_NAME=alpine-toolbox],
-        [*centos*|*stream*], [CONTAINER_NAME=centos-toolbox],
-        [*fedora*], [CONTAINER_NAME=fedora-toolbox],
-        [*ubuntu*], [CONTAINER_NAME=ubuntu-toolbox])
-AC_SUBST([CONTAINER_NAME])
+        [*alpine*], [CONTAINER_DISTRO=alpine],
+        [*centos*|*stream*], [CONTAINER_DISTRO=centos],
+        [*fedora*], [CONTAINER_DISTRO=fedora],
+        [*ubuntu*], [CONTAINER_DISTRO=ubuntu])
+AC_SUBST([CONTAINER_DISTRO])
+AC_SUBST([CONTAINER_NAME], [$CONTAINER_DISTRO-toolbox])
 
 QH_VAR_ENSURE([CONTAINER_REGISTRY],
               [Container image registry],
