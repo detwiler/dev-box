@@ -6,4 +6,4 @@ python3 -m pip install --upgrade \
     conan \
     conan-package-tools
 
-python3 -m pip cache purge
+python3 -m pip cache purge || true
