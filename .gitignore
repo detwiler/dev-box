@@ -5,6 +5,9 @@
 /ChangeLog
 /dev-box-release
 
+# Container
+Containerfile
+
 # gnulib
 /.dev-box-gnulib/
 /INSTALL

@@ -26,52 +26,169 @@ epel-release
 epel-next-release
 '
 
+packages_early='
+dnf-plugins-core
+virt-what
+'
+
+packages_missing_docs='
+bash
+dnf
+dnf-data
+dnf-plugins-core
+gawk
+grep
+gzip
+libcap
+openssl
+p11-kit
+pam
+python3
+rpm
+sed
+tar
+virt-what
+'
+
 package_groups='
-container-management
 development
-fedora-packager
 rpm-development-tools
-standard
+'
+
+packages_kernel_build="
+asciidoc
+audit-libs-devel
+bc
+binutils
+binutils-devel
+bison
+bpftool
+dwarves
+elfutils
+elfutils-devel
+flex
+fuse-devel
+gcc-plugin-devel
+gettext
+glibc-langpack-en
+glibc-static
+hmaccalc
+java-devel
+kernel-abi-stablelists
+$kernel_devel
+kernel-doc
+kernel-headers
+kernel-rpm-macros
+$kernel_srpm_macros
+kernel-tools
+$kernel_tools_libs_devel
+kmod
+libbabeltrace-devel
+libbpf-devel
+libcap-devel
+libcap-ng-devel
+libmnl-devel
+libnl3-devel
+libtraceevent-devel
+libunwind-devel
+llvm
+ncurses-devel
+net-tools
+newt-devel
+nss-tools
+numactl-devel
+openssl
+openssl-devel
+patch
+pciutils-devel
+perl(ExtUtils::Embed)
+perl-Carp
+perl-devel
+perl-generators
+perl-interpreter
+pesign
+python3-docutils
+system-sb-certs
+xmlto
+xz-devel
+zlib-devel
+"
+
+packages_toolbox_support='
+passwd
+shadow-utils
+util-linux
+vte-profile
+'
+
+packages_toolbox_experience='
+bash-completion
+bc
+bzip2
+diffutils
+findutils
+flatpak-spawn
+git
+gnupg
+gnupg2-smime
+gvfs-client
+hostname
+iproute
+iputils
+keyutils
+krb5-libs
+less
+lsof
+man-db
+man-pages
+mtr
+nss-mdns
+openssh-clients
+pigz
+pinentry
+procps-ng
+rsync
+shared-mime-info
+sudo
+tcpdump
+time
+traceroute
+tree
+unzip
+wget
+which
+words
+xorg-x11-xauth
+xz
+zip
 '
 
 packages="
-bash-completion
+$packages_kernel_build
+$packages_toolbox_support
+$packages_toolbox_experience
 bind-utils
 clang-devel
 clang-tools-extra
 cmake
 coreutils
 cscope
-curl
 dos2unix
 file
-gnupg2
 gzip
 htop
+i2c-tools
 jq
-kernel-abi-stablelists
-$kernel_devel
-kernel-doc
-kernel-headers
-kernel-modules
-kernel-modules-extra
-kernel-rpm-macros
-$kernel_srpm_macros
-kernel-tools
-$kernel_tools_libs_devel
 libpcap-devel
-man-pages
 minicom
 nmap-ncat
-podman-compose
+pciutils
 sharutils
 telnet
 vim-enhanced
-wget
-zlib-devel
 "
 
-python_packages="
+packages_python="
 python3-certifi
 python3-colorama
 python3-coverage
@@ -95,12 +212,28 @@ python3-urllib3
 python3-wheel
 "
 
-dnf --assumeyes config-manager --set-enabled $enable_repos
-
 dnf --assumeyes --refresh install $extra_repos
+dnf --assumeyes --refresh install $packages_early
+dnf --assumeyes config-manager --set-enabled $enable_repos
+dnf --assumeyes config-manager --save --setopt tsflags=
+dnf --assumeyes swap coreutils-single coreutils-full
+dnf --assumeyes swap curl-minimal curl
+dnf --assumeyes --refresh reinstall $packages_missing_docs
+
+if test "x$(virt-what)" = 'xkvm'; then
+    package_groups="
+    $package_groups
+    container-management
+    "
+    packages="
+    $packages
+    kernel-modules
+    kernel-modules-extra
+    podman-compose
+    "
+fi
 
 dnf --assumeyes --refresh groupinstall $package_groups
-
-dnf --assumeyes --refresh --allowerasing install $packages
-
-dnf --assumeyes --refresh install $python_packages
+dnf --assumeyes --refresh install $packages
+dnf --assumeyes --refresh install $packages_python
+dnf --assumeyes clean all

@@ -3,7 +3,8 @@
 
 AC_INIT([dev-box],
         [m4_esyscmd([build-aux/git-version-gen .tarball-version])],
-        [mike@detwiler.io])
+        [mike@detwiler.io], [],
+        [https://github.com/detwiler/dev-box])
 
 AC_PREREQ([2.64])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -11,13 +12,47 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([Vagrantfile.in])
 
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror foreign])
+AM_EXTRA_RECURSIVE_TARGETS([container-image])
 AM_SILENT_RULES([yes])
 
 AC_SUBST([pkgboxdir], ["\$(pkgdatadir)/\$(VM_BOX_OWNER)-\$(VM_BOX_NAME)"])
 
+QH_REQUIRE_PROG([FLATPAK_SPAWN], [flatpak-spawn], [path to flatpak-spawn])
+
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
               [$USER])
+
+QH_VAR_ENSURE([CONTAINER_BASE_IMAGE],
+              [Container base image],
+              [centos])
+
+QH_VAR_ENSURE([CONTAINER_BASE_TAG],
+              [Container base image tag],
+              [stream9])
+
+AS_CASE([$CONTAINER_BASE_IMAGE],
+        [*alpine*], [CONTAINER_NAME=alpine-toolbox],
+        [*centos*|*stream*], [CONTAINER_NAME=centos-toolbox],
+        [*fedora*], [CONTAINER_NAME=fedora-toolbox],
+        [*ubuntu*], [CONTAINER_NAME=ubuntu-toolbox])
+AC_SUBST([CONTAINER_NAME])
+
+QH_VAR_ENSURE([CONTAINER_REGISTRY],
+              [Container image registry],
+              [quay.io])
+
+QH_VAR_ENSURE([REGISTRY_ACCOUNT],
+              [Registry account],
+              [detwiler])
+
+QH_VAR_ENSURE([CONTAINER_REPO],
+              [Container image repository],
+              [$CONTAINER_NAME])
+
+QH_VAR_ENSURE([CONTAINER_TAG],
+              [Container image tag],
+              [$CONTAINER_BASE_TAG])
 
 QH_VAR_ENSURE([DETUTILS_RELEASE_URL],
               [GitHub API URL for detutils releases],
@@ -49,7 +84,7 @@ QH_VAR_ENSURE([VM_BOX_OWNER],
 
 QH_VAR_ENSURE([VM_BOX_NAME],
               [VM box name],
-              [fedora33])
+              [centos9s])
 
 QH_VAR_ENSURE([VM_CPUS],
               [Number of CPUs dedicated to VM],
@@ -71,6 +106,7 @@ AS_CASE([$VM_BOX_NAME],
 AC_SUBST([VM_DISTRO])
 
 AC_CONFIG_FILES([Makefile
+                 Containerfile
                  Vagrantfile
                  provision/Makefile
                  provision/detutils-install

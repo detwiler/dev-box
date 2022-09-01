@@ -3,8 +3,7 @@
 python3 -m pip install --upgrade \
     awscli \
     black \
-    conan
+    conan \
+    conan-package-tools
 
-python3 -m pip install --no-deps --upgrade \
-    conan-package-tools \
-    tabulate
+python3 -m pip cache purge
