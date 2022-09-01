@@ -7,7 +7,7 @@ dnf --assumeyes groupinstall \
     rpm-development-tools
 
 dnf --assumeyes install \
-    awscli
+    awscli \
     bash-completion \
     bind-utils \
     can-utils \
