@@ -2,7 +2,9 @@
 
 SUBDIRS = provision
 
+containerfile = Containerfile
 gvg_version = $(top_srcdir)/.version
+image_tag = $(CONTAINER_REGISTRY)/$(REGISTRY_ACCOUNT)/$(CONTAINER_REPO):$(CONTAINER_TAG)
 pkg_name = $(top_srcdir)/.package-name
 pkg_release = $(PACKAGE)-release
 vagrantfile = Vagrantfile
@@ -32,6 +34,14 @@ $(pkg_name):
 
 $(pkg_release): $(gvg_version)
 	$(AM_V_GEN)echo "$(PACKAGE) release $(VERSION)" > $@-t && mv $@-t $@
+
+if HAVE_FLATPAK_SPAWN
+container-image-local: $(containerfile) Makefile
+	$(AM_V_GEN)$(FLATPAK_SPAWN) --host podman build --tag $(image_tag) .
+
+publish-image:
+	$(AM_V_GEN)$(FLATPAK_SPAWN) --host podman push $(image_tag)
+endif
 
 .PHONY: gen-ChangeLog
 gen-ChangeLog:

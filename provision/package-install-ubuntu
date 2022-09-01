@@ -7,57 +7,118 @@ case $VERSION_ID in
     *) clang=clang; clangd=clangd;;
 esac
 
+packages_early='
+virt-what
+'
+
+packages_toolbox_support='
+passwd
+util-linux
+libvte-2.91-common
+'
+
+packages_toolbox_experience='
+bash-completion
+bc
+bzip2
+diffutils
+findutils
+flatpak
+flatpak-xdg-utils
+git
+gpg
+gpgsm
+gvfs
+hostname
+iproute2
+iputils-ping
+keyutils
+krb5-multidev
+less
+lsof
+man-db
+mtr
+libnss-mdns
+openssh-client
+pigz
+pinentry-tty
+procps
+rsync
+shared-mime-info
+sudo
+tcpdump
+time
+traceroute
+tree
+unzip
+wget
+debianutils
+xauth
+xz-utils
+zip
+'
+
+packages="
+autoconf
+automake
+awscli
+build-essential
+can-utils
+$clang
+$clangd
+clang-tidy
+cmake
+coreutils
+cscope
+curl
+dos2unix
+exuberant-ctags
+file
+gcovr
+gpg
+gzip
+jq
+libc++-dev
+libc++abi-dev
+libtool
+minicom
+sharutils
+software-properties-common
+vim
+xxd
+"
+
+packages_python='
+python3-bottle
+python3-certifi
+python3-colorama
+python3-coverage
+python3-dateutil
+python3-deprecation
+python3-dev
+python3-distro
+python3-fasteners
+python3-future
+python3-jinja2
+python3-jwt
+python3-nose
+python3-pip
+python3-pluginbase
+python3-pygments
+python3-requests
+python3-setuptools
+python3-six
+python3-tabulate
+python3-tqdm
+python3-urllib3
+python3-wheel
+python3-yaml
+'
+
 export DEBIAN_FRONTEND=noninteractive
-apt-get --assume-yes install \
-    autoconf \
-    automake \
-    bash-completion \
-    build-essential \
-    can-utils \
-    $clang \
-    $clangd \
-    clang-tidy \
-    cmake \
-    coreutils \
-    cscope \
-    curl \
-    dos2unix \
-    exuberant-ctags \
-    file \
-    gcovr \
-    gpg \
-    gzip \
-    jq \
-    libc++-dev \
-    libc++abi-dev \
-    libtool \
-    minicom \
-    python3-bottle \
-    python3-certifi \
-    python3-colorama \
-    python3-coverage \
-    python3-dateutil \
-    python3-deprecation \
-    python3-dev \
-    python3-distro \
-    python3-fasteners \
-    python3-future \
-    python3-jinja2 \
-    python3-jwt \
-    python3-nose \
-    python3-pip \
-    python3-pluginbase \
-    python3-pygments \
-    python3-requests \
-    python3-setuptools \
-    python3-six \
-    python3-tabulate \
-    python3-tqdm \
-    python3-urllib3 \
-    python3-wheel \
-    python3-yaml \
-    sharutils \
-    software-properties-common \
-    vim \
-    wget \
-    xxd
+apt-get --assume-yes install $packages_early
+apt-get --assume-yes install $packages_toolbox_support
+apt-get --assume-yes install $packages_toolbox_experience
+apt-get --assume-yes install $packages
+apt-get --assume-yes install $packages_python
+apt-get --assume-yes clean

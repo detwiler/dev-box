@@ -2,6 +2,6 @@
 
 # dev-box
 
-Development Environment Virtual Machines
+Development environment virtual machines and container images
 
 [comment]: # ( vim: set autoindent syntax=markdown textwidth=78: )

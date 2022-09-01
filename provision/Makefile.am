@@ -4,10 +4,11 @@ detutils_install = detutils-install
 envconf_install = envconf-install
 package_install = package-install
 package_upgrade = package-upgrade
+pip_install = pip-install
 provisiondir = $(pkgboxdir)/provision
 
 # static data/scripts (require explicit distribution)
-static_scripts = pip-install
+static_scripts = $(pip_install)
 
 dist_provision_SCRIPTS = $(static_scripts)
 
@@ -42,3 +43,8 @@ CLEANFILES = $(make_scripts)
 
 # data/scripts built by make should depend on the Makefile
 $(make_scripts): Makefile
+
+if HAVE_FLATPAK_SPAWN
+# container depdendencies
+container-image-local: $(package_install) $(package_upgrade) $(pip_install)
+endif
