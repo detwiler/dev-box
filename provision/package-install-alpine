@@ -44,6 +44,7 @@ apk add \
     py3-requests \
     py3-setuptools \
     py3-six \
+    py3-tabulate \
     py3-tqdm \
     py3-urllib3 \
     py3-wheel \
