@@ -4,6 +4,7 @@ apk add \
     alpine-sdk \
     autoconf \
     automake \
+    aws-cli \
     bash-completion \
     clang-dev \
     clang-extra-tools \

@@ -167,6 +167,7 @@ packages="
 $packages_kernel_build
 $packages_toolbox_support
 $packages_toolbox_experience
+awscli
 bind-utils
 clang-devel
 clang-tools-extra
