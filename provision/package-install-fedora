@@ -1,64 +1,104 @@
 #! /usr/bin/env bash
 
-dnf --assumeyes groupinstall \
-    c-development \
-    development-tools \
-    fedora-packager \
-    rpm-development-tools
+packages_early='
+virt-what
+'
 
-dnf --assumeyes install \
-    awscli \
-    bash-completion \
-    bind-utils \
-    can-utils \
-    clang-devel \
-    clang-tools-extra \
-    cmake \
-    coreutils \
-    cscope \
-    curl \
-    dos2unix \
-    file \
-    gcovr \
-    gnupg2 \
-    gzip \
-    htop \
-    jq \
-    kernel-modules-extra \
-    libcxx-devel \
-    libcxxabi-devel \
-    libpcap-devel \
-    man-pages \
-    minicom \
-    nmap-ncat \
-    python3-bottle \
-    python3-certifi \
-    python3-colorama \
-    python3-coverage \
-    python3-dateutil \
-    python3-deprecation \
-    python3-devel \
-    python3-distro \
-    python3-fasteners \
-    python3-future \
-    python3-jinja2 \
-    python3-jwt \
-    python3-node-semver \
-    python3-nose \
-    python3-patch-ng \
-    python3-pip \
-    python3-pluginbase \
-    python3-pygments \
-    python3-pyyaml \
-    python3-requests \
-    python3-setuptools \
-    python3-six \
-    python3-tabulate \
-    python3-tqdm \
-    python3-urllib3 \
-    python3-wheel \
-    sharutils \
-    telnet \
-    vim-enhanced \
-    wget \
-    zlib-devel
+packages_missing_docs='
+dnf
+dnf-data
+'
+
+package_groups='
+c-development
+development-tools
+fedora-packager
+rpm-development-tools
+'
+
+packages='
+awscli
+bash-completion
+bind-utils
+can-utils
+clang-devel
+clang-tools-extra
+cmake
+coreutils
+cscope
+curl
+dos2unix
+file
+gcovr
+gnupg2
+gzip
+htop
+jq
+libcxx-devel
+libcxxabi-devel
+libpcap-devel
+man-pages
+minicom
+nmap-ncat
+pass
+perl-FindBin
+shared-mime-info
+sharutils
+telnet
+toolbox-experience
+toolbox-support
+vim-enhanced
+wget
+zlib-devel
+'
+
+packages_python='
+python3-bottle
+python3-certifi
+python3-colorama
+python3-coverage
+python3-dateutil
+python3-deprecation
+python3-devel
+python3-distro
+python3-fasteners
+python3-future
+python3-jinja2
+python3-jwt
+python3-node-semver
+python3-nose
+python3-patch-ng
+python3-pip
+python3-pluginbase
+python3-pygments
+python3-pyyaml
+python3-requests
+python3-setuptools
+python3-six
+python3-tabulate
+python3-tqdm
+python3-urllib3
+python3-wheel
+'
+
+dnf --assumeyes --refresh install $packages_early
+
+if test "x$(virt-what)" = 'xpodman'; then
+    dnf --assumeyes --refresh reinstall $packages_missing_docs
+else
+    package_groups="
+    $package_groups
+    container-management
+    "
+    packages="
+    $packages
+    kernel-modules
+    kernel-modules-extra
+    podman-compose
+    "
+fi
+
+dnf --assumeyes groupinstall $package_groups
+dnf --assumeyes --refresh install $packages
+dnf --assumeyes --refresh install $packages_python
+dnf --assumeyes clean all

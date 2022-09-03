@@ -1,59 +1,63 @@
 #! /bin/sh
 
-apk add \
-    alpine-sdk \
-    autoconf \
-    automake \
-    aws-cli \
-    bash-completion \
-    clang-dev \
-    clang-extra-tools \
-    cmake \
-    coreutils \
-    ctags \
-    curl \
-    dos2unix \
-    file \
-    findutils \
-    gcovr \
-    git-diff-highlight \
-    gnupg \
-    grep \
-    gzip \
-    jq \
-    less \
-    libffi-dev \
-    libtool \
-    libxslt-dev \
-    linux-headers \
-    minicom \
-    openssl-dev \
-    py3-bottle \
-    py3-certifi \
-    py3-colorama \
-    py3-coverage \
-    py3-dateutil \
-    py3-distro \
-    py3-fasteners \
-    py3-future \
-    py3-jinja2 \
-    py3-jwt \
-    py3-nose \
-    py3-pip \
-    py3-pygments \
-    py3-requests \
-    py3-setuptools \
-    py3-six \
-    py3-tabulate \
-    py3-tqdm \
-    py3-urllib3 \
-    py3-wheel \
-    py3-yaml \
-    python3-dev \
-    rsync \
-    sharutils \
-    vim \
-    wget \
-    xxd
+packages='
+alpine-sdk
+autoconf
+automake
+aws-cli
+bash-completion
+black
+clang-dev
+clang-extra-tools
+cmake
+coreutils
+ctags
+curl
+dos2unix
+file
+findutils
+gcovr
+git-diff-highlight
+gnupg
+grep
+gzip
+jq
+less
+libffi-dev
+libtool
+libxslt-dev
+linux-headers
+minicom
+openssl-dev
+pass
+py3-bottle
+py3-certifi
+py3-colorama
+py3-coverage
+py3-dateutil
+py3-distro
+py3-fasteners
+py3-future
+py3-jinja2
+py3-jwt
+py3-nose
+py3-pip
+py3-pygments
+py3-requests
+py3-setuptools
+py3-six
+py3-tabulate
+py3-tqdm
+py3-urllib3
+py3-wheel
+py3-yaml
+python3-dev
+rsync
+sharutils
+vim
+wget
+xxd
+'
 
+apk add $packages
 apk add cscope --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing

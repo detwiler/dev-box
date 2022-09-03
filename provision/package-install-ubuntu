@@ -82,9 +82,11 @@ libc++-dev
 libc++abi-dev
 libtool
 minicom
+pass
 sharutils
 software-properties-common
 vim
+wl-clipboard
 xxd
 "
 
