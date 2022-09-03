@@ -93,10 +93,10 @@ jobs:
         run: make install
 
       - name: Provision Package Upgrade Test
-        run: provision/package-upgrade
+        run: provision/package-upgrade-vm
 
       - name: Provision Package Install Test
-        run: provision/package-install
+        run: provision/package-install-vm
 
       - name: Provision Pip Install Test
         run: provision/pip-install

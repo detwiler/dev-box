@@ -2,11 +2,35 @@
 
 set -euo pipefail
 
-python3 -m pip install --upgrade \
-    black \
-    conan
+OS_RELEASE_FILE=${OS_RELEASE_FILE:-/etc/os-release}
+source $OS_RELEASE_FILE
 
-python3 -m pip install --upgrade --no-dependencies \
-    conan-package-tools
+pkgs_common='
+conan
+'
+
+case $ID in
+    centos)
+        pkgs_common="
+        $pkgs_common
+        black
+        conan-package-tools
+        "
+        ;;
+    fedora|ubuntu)
+        pkgs_common="
+        $pkgs_common
+        conan-package-tools
+        "
+        ;;
+esac
+
+python3 -m pip install --upgrade $pkgs_common
+
+case $ID in
+    alpine)
+        python3 -m pip install --upgrade --no-dependencies conan-package-tools
+        ;;
+esac
 
 python3 -m pip cache purge || true

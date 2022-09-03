@@ -16,8 +16,8 @@ LABEL com.github.containers.toolbox="true" \
 
 ADD provision provision/
 WORKDIR provision
-RUN ./package-upgrade
-RUN ./package-install
+RUN ./package-upgrade-container
+RUN ./package-install-container
 RUN ./pip-install
 WORKDIR /
 RUN rm -rf provision

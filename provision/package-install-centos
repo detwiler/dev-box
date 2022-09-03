@@ -182,6 +182,7 @@ jq
 libpcap-devel
 minicom
 nmap-ncat
+parallel
 pciutils
 sharutils
 telnet
@@ -218,9 +219,10 @@ dnf --assumeyes config-manager --set-enabled $enable_repos
 dnf --assumeyes config-manager --save --setopt tsflags=
 dnf --assumeyes swap coreutils-single coreutils-full
 dnf --assumeyes swap curl-minimal curl
-dnf --assumeyes --refresh reinstall $packages_missing_docs
 
-if test "x$(virt-what)" = 'xkvm'; then
+if test "x$(virt-what)" = 'xpodman'; then
+    dnf --assumeyes --refresh reinstall $packages_missing_docs
+else
     package_groups="
     $package_groups
     container-management
