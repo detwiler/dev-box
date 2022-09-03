@@ -31,14 +31,6 @@ case $ID in
     alpine)
         python3 -m pip install --upgrade --no-dependencies conan-package-tools
         ;;
-    ubuntu)
-        case $VERSION_ID in
-            22.04)
-                python3 -m pip cache purge
-                ;;
-        esac
-        ;;
-    *)
-        python3 -m pip cache purge
-        ;;
 esac
+
+python3 -m pip cache purge || true
