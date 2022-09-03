@@ -40,6 +40,7 @@ libpcap-devel
 man-pages
 minicom
 nmap-ncat
+parallel
 pass
 perl-FindBin
 shared-mime-info

@@ -82,6 +82,7 @@ libc++-dev
 libc++abi-dev
 libtool
 minicom
+parallel
 pass
 sharutils
 software-properties-common

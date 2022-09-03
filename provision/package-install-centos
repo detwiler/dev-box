@@ -182,6 +182,7 @@ jq
 libpcap-devel
 minicom
 nmap-ncat
+parallel
 pciutils
 sharutils
 telnet

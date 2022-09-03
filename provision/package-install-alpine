@@ -29,6 +29,7 @@ libxslt-dev
 linux-headers
 minicom
 openssl-dev
+parallel
 pass
 py3-bottle
 py3-certifi

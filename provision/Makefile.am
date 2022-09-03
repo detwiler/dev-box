@@ -47,7 +47,7 @@ CLEANFILES = $(make_scripts)
 	$(AM_V_GEN)cp $< $@
 
 # rule to make container install/upgrade script from distro-specific script
-%-container: %-$(VM_DISTRO)
+%-container: %-$(CONTAINER_DISTRO)
 	$(AM_V_GEN)cp $< $@
 
 # data/scripts built by make should depend on the Makefile
@@ -55,5 +55,7 @@ $(make_scripts): Makefile
 
 if HAVE_FLATPAK_SPAWN
 # container depdendencies
-container-image-local: $(package_install_container) $(package_upgrade_container) $(pip_install)
+container-image-local: $(package_install_container) \
+		       $(package_upgrade_container) \
+		       $(pip_install)
 endif
