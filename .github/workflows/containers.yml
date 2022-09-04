@@ -46,9 +46,9 @@ jobs:
 
       - name: Configure Container Build
         run: |
-          ls -l
-          tar --transform='s|dev-box.*/|dev-box/|' -xzf dev-box-*.tar.gz
-          ls -l
+          tree -a
+          tar --transform='s|dev-box-[0.9.]*|dev-box|' -xzf dev-box-*.tar.gz
+          tree -a
           cd dev-box
           ./configure
           make
