@@ -46,6 +46,7 @@ jobs:
 
       - name: Configure Container Build
         run: |
+          echo tag_name ${{ steps.dist-download.outputs.tag_name }}
           version_tag=${{ steps.dist-download.outputs.tag_name }}
           version=${version_tag#v}
           ls -l
