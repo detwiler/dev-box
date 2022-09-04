@@ -53,9 +53,10 @@ CLEANFILES = $(make_scripts)
 # data/scripts built by make should depend on the Makefile
 $(make_scripts): Makefile
 
+all-local: $(package_install_container) \
+           $(package_upgrade_container)
+
 if HAVE_FLATPAK_SPAWN
 # container depdendencies
-container-image-local: $(package_install_container) \
-		       $(package_upgrade_container) \
-		       $(pip_install)
+container-image-local: all-local
 endif
