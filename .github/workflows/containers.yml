@@ -1,0 +1,75 @@
+name: containers
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and push
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - base-image: quay.io/centos/centos
+            base-tag: stream8
+            distro: centos
+          - base-image: quay.io/centos/centos
+            base-tag: stream9
+            distro: centos
+          - base-image: registry.fedoraproject.org/fedora-toolbox
+            base-tag: 36
+            distro: fedora
+          - base-image: quay.io/toolbx-images/ubuntu-toolbox
+            base-tag: 22.04
+            distro: ubuntu
+
+    env:
+      CONTAINER_BASE_IMAGE: ${{ matrix.base-image }}
+      CONTAINER_BASE_TAG: ${{ matrix.base-tag }}
+      CONTAINER_REGISTRY: "quay.io"
+      CONTAINER_REPO: ${{ matrix.distro }}-toolbox
+      GIT_AUTHOR_EMAIL: "mike@detwiler.io"
+      GIT_AUTHOR_NAME: "Mike Detwiler"
+      REGISTRY_ACCOUNT: "detwiler"
+      USER: ${{ github.repository_owner }}
+
+    steps:
+      - name: Download Release Distribution Tarball
+        id: dist-download
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          file: "dev-box-.*\\.tar\\.gz"
+          regex: true
+
+      - name: Configure Container Build
+        run: |
+          tar -xzf dev-box-${{ steps.dist-download.outputs.version }}.tar.gz
+          cd dev-box-${{ steps.dist-download.outputs.version }}
+          ./configure
+          make
+
+      # steps below inspired by https://github.com/coreos/actions-lib/blob/main/build-container/action.yml
+      - name: Build Container
+        run: |
+          podman manifest rm build 2>/dev/null ||:
+          set -x
+          podman build \
+            --manifest build \
+            --file dev-box-${{ steps.dist-download.outputs.version }}/Containerfile \
+            dev-box-${{ steps.dist-download.outputs.version }}
+
+      - name: Push container
+        run: |
+          mkdir -p ~/.docker
+          cat > ~/.docker/config.json <<EOF
+          ${{ secrets.QUAY_AUTH }}
+          EOF
+          podman manifest push build \
+            $CONTAINER_REGISTRY/$REGISTRY_ACCOUNT/$CONTAINER_REPO:$CONTAINER_BASE_TAG
+
+      - name: Remove credentials
+        if: ${{ always() }}
+        run: rm -f ~/.docker/config.json
