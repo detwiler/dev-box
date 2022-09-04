@@ -46,14 +46,17 @@ jobs:
 
       - name: Configure Container Build
         run: |
-          tree -a
-          tar --transform='s|dev-box-[0.9.]*|dev-box|' -xzf dev-box-*.tar.gz
-          tree -a
+          tar --transform='s|dev-box-[0-9.]*|dev-box|' -xzf dev-box-*.tar.gz
           cd dev-box
           ./configure
           make
 
       # steps below inspired by https://github.com/coreos/actions-lib/blob/main/build-container/action.yml
+      - name: Install Container Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install qemu-user-static
+
       - name: Build Container
         run: |
           podman manifest rm build 2>/dev/null ||:
