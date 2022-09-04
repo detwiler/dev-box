@@ -39,10 +39,10 @@ jobs:
     steps:
       - name: Download Release Distribution Tarball
         id: dist-download
-        uses: dsaltares/fetch-gh-release-asset@master
+        uses: robinraju/release-downloader@v1.4
         with:
-          file: "dev-box-.*\\.tar\\.gz"
-          regex: true
+          latest: true
+          fileName: "dev-box-*.tar.gz"
 
       - name: Configure Container Build
         run: |
