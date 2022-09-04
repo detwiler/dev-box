@@ -46,27 +46,22 @@ jobs:
 
       - name: Configure Container Build
         run: |
-          echo tag_name ${{ steps.dist-download.outputs.tag_name }}
-          version_tag=${{ steps.dist-download.outputs.tag_name }}
-          version=${version_tag#v}
           ls -l
-          tar -xzf dev-box-$version.tar.gz
+          tar --transform='s|dev-box.*/|dev-box/|' -xzf dev-box-*.tar.gz
           ls -l
-          cd dev-box-$version
+          cd dev-box
           ./configure
           make
 
       # steps below inspired by https://github.com/coreos/actions-lib/blob/main/build-container/action.yml
       - name: Build Container
         run: |
-          version_tag=${{ steps.dist-download.outputs.tag_name }}
-          version=${version_tag#v}
           podman manifest rm build 2>/dev/null ||:
           set -x
           podman build \
             --manifest build \
-            --file dev-box-$version/Containerfile \
-            dev-box-$version
+            --file dev-box/Containerfile \
+            dev-box
 
       - name: Push container
         run: |
