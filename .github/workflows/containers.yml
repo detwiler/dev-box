@@ -48,6 +48,7 @@ jobs:
         run: |
           version_tag=${{ steps.dist-download.outputs.version }}
           version=${version_tag#v}
+          ls -l
           tar -xzf dev-box-$version.tar.gz
           cd dev-box-$version
           ./configure
