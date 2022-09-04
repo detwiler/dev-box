@@ -55,9 +55,11 @@ jobs:
       - name: Install Container Build Dependencies
         run: |
           sudo apt-get update
+          sudo apt-get -y upgrade
           sudo apt-get -y install qemu-user-static
 
       - name: Build Container
+        shell: bash
         run: |
           podman manifest rm build 2>/dev/null ||:
           set -x
@@ -67,6 +69,7 @@ jobs:
             dev-box
 
       - name: Push container
+        shell: bash
         run: |
           mkdir -p ~/.docker
           cat > ~/.docker/config.json <<EOF
