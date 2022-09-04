@@ -46,10 +46,11 @@ jobs:
 
       - name: Configure Container Build
         run: |
-          version_tag=${{ steps.dist-download.outputs.version }}
+          version_tag=${{ steps.dist-download.outputs.tag_name }}
           version=${version_tag#v}
           ls -l
           tar -xzf dev-box-$version.tar.gz
+          ls -l
           cd dev-box-$version
           ./configure
           make
@@ -57,7 +58,7 @@ jobs:
       # steps below inspired by https://github.com/coreos/actions-lib/blob/main/build-container/action.yml
       - name: Build Container
         run: |
-          version_tag=${{ steps.dist-download.outputs.version }}
+          version_tag=${{ steps.dist-download.outputs.tag_name }}
           version=${version_tag#v}
           podman manifest rm build 2>/dev/null ||:
           set -x
