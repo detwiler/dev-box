@@ -16,7 +16,7 @@ jobs:
           - base-image: quay.io/centos/centos
             base-tag: stream8
             distro: centos
-          - base-image: quay.io/centos/centos
+          - base-image: quay.io/toolbx-images/centos-toolbox
             base-tag: stream9
             distro: centos
           - base-image: registry.fedoraproject.org/fedora-toolbox
@@ -28,9 +28,9 @@ jobs:
 
     env:
       CONTAINER_BASE_IMAGE: ${{ matrix.base-image }}
-      CONTAINER_BASE_TAG: ${{ matrix.base-tag }}
-      CONTAINER_REGISTRY: "quay.io"
-      CONTAINER_REPO: ${{ matrix.distro }}-toolbox
+      CONTAINER_BASE_IMAGE_TAG: ${{ matrix.base-tag }}
+      IMAGE_REGISTRY: "quay.io"
+      IMAGE_NAME: ${{ matrix.distro }}-toolbox
       GIT_AUTHOR_EMAIL: "mike@detwiler.io"
       GIT_AUTHOR_NAME: "Mike Detwiler"
       REGISTRY_ACCOUNT: "detwiler"
@@ -44,40 +44,32 @@ jobs:
           latest: true
           fileName: "dev-box-*.tar.gz"
 
-      - name: Configure Container Build
+      - name: Configure Container Image Build
         run: |
           tar --transform='s|dev-box-[0-9.]*|dev-box|' -xzf dev-box-*.tar.gz
           cd dev-box
           ./configure
           make
+          echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
-      # steps below inspired by https://github.com/coreos/actions-lib/blob/main/build-container/action.yml
-      - name: Install Container Build Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get -y upgrade
-          sudo apt-get -y install qemu-user-static
+      - name: Build Container Image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: $IMAGE_NAME
+          tags: $CONTAINER_BASE_IMAGE_TAG dev-box-${{ env.PROJECT_VERSION }}
+          context: dev-box
+          containerfiles: dev-box/Containerfile
 
-      - name: Build Container
-        shell: bash
-        run: |
-          podman manifest rm build 2>/dev/null ||:
-          set -x
-          podman build \
-            --manifest build \
-            --file dev-box/Containerfile \
-            dev-box
+      - name: Push Container Image
+        id: push-image
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          registry: $IMAGE_REGISTRY/$REGISTRY_ACCOUNT
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
 
-      - name: Push container
-        shell: bash
-        run: |
-          mkdir -p ~/.docker
-          cat > ~/.docker/config.json <<EOF
-          ${{ secrets.QUAY_AUTH }}
-          EOF
-          podman manifest push build \
-            $CONTAINER_REGISTRY/$REGISTRY_ACCOUNT/$CONTAINER_REPO:$CONTAINER_BASE_TAG
-
-      - name: Remove credentials
-        if: ${{ always() }}
-        run: rm -f ~/.docker/config.json
+      - name: Display Image URLs
+        run: echo "${{ toJSON(steps.push-image.outputs) }}"
