@@ -19,12 +19,12 @@ jobs:
           - base-image: quay.io/toolbx-images/centos-toolbox
             base-tag: stream9
             distro: centos
-          - base-image: registry.fedoraproject.org/fedora-toolbox
-            base-tag: 36
-            distro: fedora
           - base-image: quay.io/toolbx-images/ubuntu-toolbox
             base-tag: 22.04
             distro: ubuntu
+            #- base-image: registry.fedoraproject.org/fedora-toolbox
+            #base-tag: 36
+            #distro: fedora
 
     env:
       CONTAINER_BASE_IMAGE: ${{ matrix.base-image }}
