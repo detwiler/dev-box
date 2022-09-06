@@ -28,9 +28,9 @@ jobs:
 
     env:
       CONTAINER_BASE_IMAGE: ${{ matrix.base-image }}
-      CONTAINER_BASE_IMAGE_TAG: ${{ matrix.base-tag }}
-      IMAGE_REGISTRY: "quay.io"
-      IMAGE_NAME: ${{ matrix.distro }}-toolbox
+      CONTAINER_BASE_TAG: ${{ matrix.base-tag }}
+      CONTAINER_REGISTRY: "quay.io"
+      CONTAINER_REPO: ${{ matrix.distro }}-toolbox
       GIT_AUTHOR_EMAIL: "mike@detwiler.io"
       GIT_AUTHOR_NAME: "Mike Detwiler"
       REGISTRY_ACCOUNT: "detwiler"
@@ -56,8 +56,8 @@ jobs:
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
-          image: ${{ env.IMAGE_NAME }}
-          tags: ${{ env.CONTAINER_BASE_IMAGE_TAG }} dev-box-${{ env.PROJECT_VERSION }}
+          image: ${{ env.CONTAINER_REPO }}
+          tags: ${{ env.CONTAINER_BASE_TAG }} dev-box-${{ env.PROJECT_VERSION }}
           context: dev-box
           containerfiles: dev-box/Containerfile
 
@@ -67,7 +67,7 @@ jobs:
         with:
           image: ${{ steps.build-image.outputs.image }}
           tags: ${{ steps.build-image.outputs.tags }}
-          registry: ${{ env.IMAGE_REGISTRY }}/${{ env.REGISTRY_ACCOUNT }}
+          registry: ${{ env.CONTAINER_REGISTRY }}/${{ env.REGISTRY_ACCOUNT }}
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
 
