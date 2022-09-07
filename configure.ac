@@ -72,6 +72,7 @@ QH_VAR_ENSURE([TOOLBOX_BASE_TAG],
 AS_CASE([$TOOLBOX_BASE_IMAGE],
         [*alpine*], [TOOLBOX_DISTRO=alpine],
         [*centos*|*stream*], [TOOLBOX_DISTRO=centos],
+        [*debian*], [TOOLBOX_DISTRO=debian],
         [*fedora*], [TOOLBOX_DISTRO=fedora],
         [*ubuntu*], [TOOLBOX_DISTRO=ubuntu])
 AC_SUBST([TOOLBOX_DISTRO])
@@ -140,6 +141,7 @@ QH_VAR_ENSURE([VM_SYNCED_FOLDER_MOUNT],
 AS_CASE([$VM_BOX_NAME],
         [alpine*], [VM_DISTRO=alpine],
         [centos*|stream*], [VM_DISTRO=centos],
+        [debian*], [VM_DISTRO=debian],
         [fedora*|*-cloud-base], [VM_DISTRO=fedora],
         [ubuntu*], [VM_DISTRO=ubuntu])
 AC_SUBST([VM_DISTRO])

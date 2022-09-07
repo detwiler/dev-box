@@ -16,10 +16,12 @@ dist_provision_SCRIPTS = $(static_scripts)
 
 extra_static_sources = package-install-alpine \
 		       package-install-centos \
+		       package-install-debian \
 		       package-install-fedora \
 		       package-install-ubuntu \
 		       package-upgrade-alpine \
 		       package-upgrade-centos \
+		       package-upgrade-debian \
 		       package-upgrade-fedora \
 		       package-upgrade-ubuntu
 

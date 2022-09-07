@@ -16,6 +16,8 @@ jobs:
             vm-box-name: centos
           - image: quay.io/centos/centos:stream9
             vm-box-name: centos
+          - image: debian:latest
+            vm-box-name: debian
           - image: fedora:latest
             vm-box-name: fedora
           - image: ubuntu:20.04
