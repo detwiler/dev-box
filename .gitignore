@@ -5,12 +5,12 @@
 /ChangeLog
 /dev-box-release
 
-# Toolbox
-Containerfile
-
 # gnulib
 /.dev-box-gnulib/
 /INSTALL
+
+# Toolbx
+Containerfile
 
 # Vagrant
 Vagrantfile

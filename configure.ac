@@ -28,7 +28,7 @@ AC_CACHE_CHECK(
                         ac_cv_path_BUILDAH="$ac_path_BUILDAH$BUILDAH_ARGS"
                         ac_path_BUILDAH_found=:
                  fi],
-                [AC_MSG_WARN([Could not find podman. Disabling Toolbox image build.])],
+                [AC_MSG_WARN([Could not find podman. Disabling Toolbx image build.])],
                 [$PATH$PATH_SEPARATOR/usr/libexec/flatpak-xdg-utils])])
 AM_CONDITIONAL([HAVE_BUILDAH], [test "x$ac_cv_path_BUILDAH" != x])
 AM_COND_IF([HAVE_BUILDAH],
@@ -49,7 +49,7 @@ AC_CACHE_CHECK(
                         ac_cv_path_PODMAN="$ac_path_PODMAN$PODMAN_ARGS"
                         ac_path_PODMAN_found=:
                  fi],
-                [AC_MSG_WARN([Could not find podman. Disabling Toolbox image push.])],
+                [AC_MSG_WARN([Could not find podman. Disabling Toolbx image push.])],
                 [$PATH$PATH_SEPARATOR/usr/libexec/flatpak-xdg-utils])])
 AM_CONDITIONAL([HAVE_PODMAN], [test "x$ac_cv_path_PODMAN" != x])
 AM_COND_IF([HAVE_PODMAN],
@@ -62,11 +62,11 @@ QH_VAR_ENSURE([CONAN_USERNAME],
               [$USER])
 
 QH_VAR_ENSURE([TOOLBOX_BASE_IMAGE],
-              [Toolbox base image],
+              [Toolbx base image],
               [centos])
 
 QH_VAR_ENSURE([TOOLBOX_BASE_TAG],
-              [Toolbox base image tag],
+              [Toolbx base image tag],
               [stream9])
 
 AS_CASE([$TOOLBOX_BASE_IMAGE],
@@ -79,7 +79,7 @@ AC_SUBST([TOOLBOX_DISTRO])
 AC_SUBST([TOOLBOX_NAME], [$TOOLBOX_DISTRO-toolbox])
 
 QH_VAR_ENSURE([TOOLBOX_REGISTRY],
-              [Toolbox image registry],
+              [Toolbx image registry],
               [quay.io])
 
 QH_VAR_ENSURE([REGISTRY_ACCOUNT],
@@ -87,11 +87,11 @@ QH_VAR_ENSURE([REGISTRY_ACCOUNT],
               [$USER])
 
 QH_VAR_ENSURE([TOOLBOX_REPO],
-              [Toolbox image repository],
+              [Toolbx image repository],
               [$TOOLBOX_NAME])
 
 QH_VAR_ENSURE([TOOLBOX_TAG],
-              [Toolbox image tag],
+              [Toolbx image tag],
               [$TOOLBOX_BASE_TAG-$PACKAGE_NAME-$PACKAGE_VERSION])
 
 QH_VAR_ENSURE([DETUTILS_RELEASE_URL],
