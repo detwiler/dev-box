@@ -9,7 +9,7 @@ Development environment [Vagrant][1] virtual machines and [Toolbx][2] container 
 * [CentOS Toolbx Repository on Quay][3]
 * [Debian Toolbx Repository on Quay][4]
 * [Fedora Toolbx Repository on Quay][5]
-* [Ubuntu Toolbx Repository on Quay][6]]
+* [Ubuntu Toolbx Repository on Quay][6]
 
 [1]: https://www.vagrantup.com/
 [2]: https://containertoolbx.org/
