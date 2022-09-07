@@ -34,7 +34,6 @@ jobs:
       GIT_AUTHOR_EMAIL: "mike@detwiler.io"
       GIT_AUTHOR_NAME: "Mike Detwiler"
       REGISTRY_ACCOUNT: "detwiler"
-      USER: ${{ github.repository_owner }}
 
     steps:
       - name: Download Release Distribution Tarball
