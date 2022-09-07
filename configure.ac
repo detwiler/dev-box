@@ -14,12 +14,46 @@ AC_CONFIG_SRCDIR([Vagrantfile.in])
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror foreign])
 AM_SILENT_RULES([yes])
 
-AC_ARG_VAR([FLATPAK_SPAWN], [path to flatpak-spawn])
-AC_PATH_PROG([FLATPAK_SPAWN], [flatpak-spawn], [no],
-             [$PATH$PATH_SEPARATOR/usr/libexec/flatpak-xdg-utils])
-AM_CONDITIONAL([HAVE_FLATPAK_SPAWN], [test "x$FLATPAK_SPAWN" != xno])
-AM_COND_IF([HAVE_FLATPAK_SPAWN],
-           [AM_EXTRA_RECURSIVE_TARGETS([container-image])])
+AC_ARG_VAR([BUILDAH], [path to buildah])
+AC_CACHE_CHECK(
+        [for buildah],
+        [ac_cv_path_BUILDAH],
+        [AC_PATH_PROGS_FEATURE_CHECK(
+                [BUILDAH],
+                [buildah flatpak-spawn],
+                [if echo $ac_path_BUILDAH | grep -q flatpak-spawn; then
+                        BUILDAH_ARGS=' --host buildah'
+                 fi
+                 if $ac_path_BUILDAH$BUILDAH_ARGS ls &> /dev/null; then
+                        ac_cv_path_BUILDAH="$ac_path_BUILDAH$BUILDAH_ARGS"
+                        ac_path_BUILDAH_found=:
+                 fi],
+                [AC_MSG_WARN([Could not find podman. Disabling Toolbox image build.])],
+                [$PATH$PATH_SEPARATOR/usr/libexec/flatpak-xdg-utils])])
+AM_CONDITIONAL([HAVE_BUILDAH], [test "x$ac_cv_path_BUILDAH" != x])
+AM_COND_IF([HAVE_BUILDAH],
+           [AC_SUBST([BUILDAH], [$ac_cv_path_BUILDAH])
+            AM_EXTRA_RECURSIVE_TARGETS([build-toolbox-image])])
+
+AC_ARG_VAR([PODMAN], [path to podman])
+AC_CACHE_CHECK(
+        [for podman],
+        [ac_cv_path_PODMAN],
+        [AC_PATH_PROGS_FEATURE_CHECK(
+                [PODMAN],
+                [podman flatpak-spawn],
+                [if echo $ac_path_PODMAN | grep -q flatpak-spawn; then
+                        PODMAN_ARGS=' --host podman'
+                 fi
+                 if eval $ac_path_PODMAN$PODMAN_ARGS images &> /dev/null; then
+                        ac_cv_path_PODMAN="$ac_path_PODMAN$PODMAN_ARGS"
+                        ac_path_PODMAN_found=:
+                 fi],
+                [AC_MSG_WARN([Could not find podman. Disabling Toolbox image push.])],
+                [$PATH$PATH_SEPARATOR/usr/libexec/flatpak-xdg-utils])])
+AM_CONDITIONAL([HAVE_PODMAN], [test "x$ac_cv_path_PODMAN" != x])
+AM_COND_IF([HAVE_PODMAN],
+           [AC_SUBST([PODMAN], [$ac_cv_path_PODMAN])])
 
 AC_SUBST([pkgboxdir], ["\$(pkgdatadir)/\$(VM_BOX_OWNER)-\$(VM_BOX_NAME)"])
 
@@ -27,37 +61,37 @@ QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
               [$USER])
 
-QH_VAR_ENSURE([CONTAINER_BASE_IMAGE],
-              [Container base image],
+QH_VAR_ENSURE([TOOLBOX_BASE_IMAGE],
+              [Toolbox base image],
               [centos])
 
-QH_VAR_ENSURE([CONTAINER_BASE_TAG],
-              [Container base image tag],
+QH_VAR_ENSURE([TOOLBOX_BASE_TAG],
+              [Toolbox base image tag],
               [stream9])
 
-AS_CASE([$CONTAINER_BASE_IMAGE],
-        [*alpine*], [CONTAINER_DISTRO=alpine],
-        [*centos*|*stream*], [CONTAINER_DISTRO=centos],
-        [*fedora*], [CONTAINER_DISTRO=fedora],
-        [*ubuntu*], [CONTAINER_DISTRO=ubuntu])
-AC_SUBST([CONTAINER_DISTRO])
-AC_SUBST([CONTAINER_NAME], [$CONTAINER_DISTRO-toolbox])
+AS_CASE([$TOOLBOX_BASE_IMAGE],
+        [*alpine*], [TOOLBOX_DISTRO=alpine],
+        [*centos*|*stream*], [TOOLBOX_DISTRO=centos],
+        [*fedora*], [TOOLBOX_DISTRO=fedora],
+        [*ubuntu*], [TOOLBOX_DISTRO=ubuntu])
+AC_SUBST([TOOLBOX_DISTRO])
+AC_SUBST([TOOLBOX_NAME], [$TOOLBOX_DISTRO-toolbox])
 
-QH_VAR_ENSURE([CONTAINER_REGISTRY],
-              [Container image registry],
+QH_VAR_ENSURE([TOOLBOX_REGISTRY],
+              [Toolbox image registry],
               [quay.io])
 
 QH_VAR_ENSURE([REGISTRY_ACCOUNT],
               [Registry account],
               [$USER])
 
-QH_VAR_ENSURE([CONTAINER_REPO],
-              [Container image repository],
-              [$CONTAINER_NAME])
+QH_VAR_ENSURE([TOOLBOX_REPO],
+              [Toolbox image repository],
+              [$TOOLBOX_NAME])
 
-QH_VAR_ENSURE([CONTAINER_TAG],
-              [Container image tag],
-              [$CONTAINER_BASE_TAG])
+QH_VAR_ENSURE([TOOLBOX_TAG],
+              [Toolbox image tag],
+              [$TOOLBOX_BASE_TAG-$PACKAGE_NAME-$PACKAGE_VERSION])
 
 QH_VAR_ENSURE([DETUTILS_RELEASE_URL],
               [GitHub API URL for detutils releases],

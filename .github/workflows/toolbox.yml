@@ -1,4 +1,4 @@
-name: containers
+name: toolbox
 
 on:
   schedule:
@@ -28,10 +28,10 @@ jobs:
             distro: fedora
 
     env:
-      CONTAINER_BASE_IMAGE: ${{ matrix.base-image }}
-      CONTAINER_BASE_TAG: ${{ matrix.base-tag }}
-      CONTAINER_REGISTRY: "quay.io"
-      CONTAINER_REPO: ${{ matrix.distro }}-toolbox
+      TOOLBOX_BASE_IMAGE: ${{ matrix.base-image }}
+      TOOLBOX_BASE_TAG: ${{ matrix.base-tag }}
+      TOOLBOX_REGISTRY: "quay.io"
+      TOOLBOX_REPO: ${{ matrix.distro }}-toolbox
       GIT_AUTHOR_EMAIL: "mike@detwiler.io"
       GIT_AUTHOR_NAME: "Mike Detwiler"
       REGISTRY_ACCOUNT: "detwiler"
@@ -44,7 +44,7 @@ jobs:
           latest: true
           fileName: "dev-box-*.tar.gz"
 
-      - name: Configure Container Image Build
+      - name: Configure Toolbox Image Build
         run: |
           tar --transform='s|dev-box-[0-9.]*|dev-box|' -xzf dev-box-*.tar.gz
           cd dev-box
@@ -52,25 +52,25 @@ jobs:
           make
           echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
-      - name: Build Container Image
+      - name: Build Toolbox Image
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
-          image: ${{ env.CONTAINER_REPO }}
+          image: ${{ env.TOOLBOX_REPO }}
           oci: true
           tags: |
-            ${{ env.CONTAINER_BASE_TAG }}
-            ${{ env.CONTAINER_BASE_TAG }}-dev-box-${{ env.PROJECT_VERSION }}
+            ${{ env.TOOLBOX_BASE_TAG }}
+            ${{ env.TOOLBOX_BASE_TAG }}-dev-box-${{ env.PROJECT_VERSION }}
           context: dev-box
           containerfiles: dev-box/Containerfile
 
-      - name: Push Container Image
+      - name: Push Toolbox Image
         id: push-image
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ steps.build-image.outputs.image }}
           tags: ${{ steps.build-image.outputs.tags }}
-          registry: ${{ env.CONTAINER_REGISTRY }}/${{ env.REGISTRY_ACCOUNT }}
+          registry: ${{ env.TOOLBOX_REGISTRY }}/${{ env.REGISTRY_ACCOUNT }}
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
 

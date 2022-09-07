@@ -2,7 +2,7 @@
 
 /detutils-install
 /envconf-install
-/package-install-container
+/package-install-toolbox
 /package-install-vm
-/package-upgrade-container
+/package-upgrade-toolbox
 /package-upgrade-vm
