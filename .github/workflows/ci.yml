@@ -16,6 +16,8 @@ jobs:
             vm-box-name: centos
           - image: quay.io/centos/centos:stream9
             vm-box-name: centos
+          - image: debian:latest
+            vm-box-name: debian
           - image: fedora:latest
             vm-box-name: fedora
           - image: ubuntu:20.04
@@ -39,7 +41,7 @@ jobs:
           case $ID in
               alpine) apk update && apk upgrade && apk add git tar;;
               centos|fedora) dnf -y --refresh upgrade && dnf -y install dnf-plugins-core git-core which;;
-              ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
+              debian|ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
           esac
 
       - name: Checkout

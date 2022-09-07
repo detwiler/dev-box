@@ -1,0 +1,81 @@
+name: toolbox
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and push
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - base-image: quay.io/centos/centos
+            base-tag: stream8
+            distro: centos
+          - base-image: quay.io/toolbx-images/centos-toolbox
+            base-tag: stream9
+            distro: centos
+          - base-image: quay.io/toolbx-images/debian-toolbox
+            base-tag: 11
+            distro: debian
+          - base-image: registry.fedoraproject.org/fedora-toolbox
+            base-tag: 36
+            distro: fedora
+          - base-image: quay.io/toolbx-images/ubuntu-toolbox
+            base-tag: 22.04
+            distro: ubuntu
+
+    env:
+      TOOLBOX_BASE_IMAGE: ${{ matrix.base-image }}
+      TOOLBOX_BASE_TAG: ${{ matrix.base-tag }}
+      TOOLBOX_REGISTRY: "quay.io"
+      TOOLBOX_REPO: ${{ matrix.distro }}-toolbox
+      GIT_AUTHOR_EMAIL: "mike@detwiler.io"
+      GIT_AUTHOR_NAME: "Mike Detwiler"
+      REGISTRY_ACCOUNT: "detwiler"
+
+    steps:
+      - name: Download Release Distribution Tarball
+        id: dist-download
+        uses: robinraju/release-downloader@v1.4
+        with:
+          latest: true
+          fileName: "dev-box-*.tar.gz"
+
+      - name: Configure Toolbox Image Build
+        run: |
+          tar --transform='s|dev-box-[0-9.]*|dev-box|' -xzf dev-box-*.tar.gz
+          cd dev-box
+          ./configure
+          make
+          echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
+
+      - name: Build Toolbox Image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.TOOLBOX_REPO }}
+          oci: true
+          tags: |
+            ${{ env.TOOLBOX_BASE_TAG }}
+            ${{ env.TOOLBOX_BASE_TAG }}-dev-box-${{ env.PROJECT_VERSION }}
+          context: dev-box
+          containerfiles: dev-box/Containerfile
+
+      - name: Push Toolbox Image
+        id: push-image
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          registry: ${{ env.TOOLBOX_REGISTRY }}/${{ env.REGISTRY_ACCOUNT }}
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+
+      - name: Display Image URLs
+        run: echo "${{ toJSON(steps.push-image.outputs) }}"
