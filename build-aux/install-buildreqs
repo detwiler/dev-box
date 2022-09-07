@@ -37,7 +37,7 @@ case $ID in
     fedora)
         $SUDO dnf --assumeyes install $pkgs_common
         ;;
-    ubuntu)
+    debian|ubuntu)
         $SUDO apt-get --assume-yes install $pkgs_common
         ;;
 esac
