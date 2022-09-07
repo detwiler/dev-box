@@ -29,7 +29,6 @@ jobs:
       DEBIAN_FRONTEND: noninteractive
       GNULIB_REFDIR: "$HOME/.gnulib"
       GNULIB_URL: 'https://github.com/coreutils/gnulib.git'
-      USER: ${{ github.repository_owner }}
       VM_BOX_NAME: ${{ matrix.vm-box-name }}
 
     steps:

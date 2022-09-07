@@ -58,7 +58,9 @@ jobs:
         with:
           image: ${{ env.CONTAINER_REPO }}
           oci: true
-          tags: ${{ env.CONTAINER_BASE_TAG }}-dev-box-${{ env.PROJECT_VERSION }}
+          tags: |
+            ${{ env.CONTAINER_BASE_TAG }}
+            ${{ env.CONTAINER_BASE_TAG }}-dev-box-${{ env.PROJECT_VERSION }}
           context: dev-box
           containerfiles: dev-box/Containerfile
 
