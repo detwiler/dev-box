@@ -20,7 +20,7 @@ jobs:
             vm-box-name: debian
           - image: fedora:latest
             vm-box-name: fedora
-          - image: redhat:latest
+          - image: redhat/ubi9:latest
             vm-box-name: rhel
           - image: ubuntu:20.04
             vm-box-name: ubuntu
