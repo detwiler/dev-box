@@ -20,6 +20,8 @@ jobs:
             vm-box-name: debian
           - image: fedora:latest
             vm-box-name: fedora
+          - image: redhat:latest
+            vm-box-name: rhel
           - image: ubuntu:20.04
             vm-box-name: ubuntu
           - image: ubuntu:latest
@@ -40,7 +42,7 @@ jobs:
           . /etc/os-release
           case $ID in
               alpine) apk update && apk upgrade && apk add git tar;;
-              centos|fedora) dnf -y --refresh upgrade && dnf -y install dnf-plugins-core git-core which;;
+              centos|fedora|rhel) dnf -y --refresh upgrade && dnf -y install dnf-plugins-core git-core which;;
               debian|ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
           esac
 

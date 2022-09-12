@@ -26,6 +26,9 @@ jobs:
           - base-image: registry.fedoraproject.org/fedora-toolbox
             base-tag: 36
             distro: fedora
+          - base-image: quay.io/toolbx-images/rhel-toolbox
+            base-tag: 9.0
+            distro: rhel
           - base-image: quay.io/toolbx-images/ubuntu-toolbox
             base-tag: 22.04
             distro: ubuntu
