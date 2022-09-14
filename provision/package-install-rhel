@@ -37,8 +37,10 @@ nmap-ncat
 parallel
 pciutils
 platform-python-devel
+shared-mime-info
 tar
 vim-enhanced
+wget
 "
 
 packages_python="
