@@ -220,9 +220,7 @@ dnf --assumeyes config-manager --save --setopt tsflags=
 dnf --assumeyes swap coreutils-single coreutils-full
 dnf --assumeyes swap curl-minimal curl
 
-if test "x$(virt-what)" = 'xpodman'; then
-    dnf --assumeyes --refresh reinstall $packages_missing_docs
-else
+if test "x$(virt-what)" = 'xkvm'; then
     package_groups="
     $package_groups
     container-management
@@ -233,6 +231,8 @@ else
     kernel-modules-extra
     podman-compose
     "
+else
+    dnf --assumeyes --refresh reinstall $packages_missing_docs
 fi
 
 dnf --assumeyes --refresh groupinstall $package_groups
