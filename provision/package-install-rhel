@@ -1,0 +1,82 @@
+#! /usr/bin/env bash
+
+set -euo pipefail
+
+extra_repos='
+https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+'
+
+packages_early='
+dnf-plugins-core
+virt-what
+'
+
+packages="
+autoconf
+automake
+bind-utils
+clang
+clang-devel
+clang-tools-extra
+cmake
+coreutils
+ctags
+dos2unix
+file
+findutils
+gcc
+gcc-c++
+git
+grep
+gzip
+htop
+jq
+libpcap-devel
+make
+nmap-ncat
+parallel
+pciutils
+platform-python-devel
+shared-mime-info
+tar
+vim-enhanced
+wget
+"
+
+packages_python="
+python3-certifi
+python3-colorama
+python3-coverage
+python3-dateutil
+python3-devel
+python3-fasteners
+python3-future
+python3-jinja2
+python3-jwt
+python3-nose2
+python3-pip
+python3-requests
+python3-setuptools
+python3-six
+python3-tabulate
+python3-tqdm
+python3-urllib3
+"
+
+dnf --assumeyes --refresh install $extra_repos
+dnf --assumeyes --refresh install $packages_early
+dnf --assumeyes config-manager --save --setopt tsflags=
+dnf --assumeyes swap coreutils-single coreutils-full
+dnf --assumeyes swap curl-minimal curl
+
+if test "x$(virt-what)" = 'xkvm'; then
+    packages="
+    $packages
+    kernel-modules
+    podman-compose
+    "
+fi
+
+dnf --assumeyes --refresh install $packages
+dnf --assumeyes --refresh install $packages_python
+dnf --assumeyes clean all

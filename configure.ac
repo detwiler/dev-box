@@ -70,11 +70,12 @@ QH_VAR_ENSURE([TOOLBOX_BASE_TAG],
               [stream9])
 
 AS_CASE([$TOOLBOX_BASE_IMAGE],
-        [*alpine*], [TOOLBOX_DISTRO=alpine],
+        [*alpine*],          [TOOLBOX_DISTRO=alpine],
         [*centos*|*stream*], [TOOLBOX_DISTRO=centos],
-        [*debian*], [TOOLBOX_DISTRO=debian],
-        [*fedora*], [TOOLBOX_DISTRO=fedora],
-        [*ubuntu*], [TOOLBOX_DISTRO=ubuntu])
+        [*debian*],          [TOOLBOX_DISTRO=debian],
+        [*fedora*],          [TOOLBOX_DISTRO=fedora],
+        [*rhel*|*ubi*],      [TOOLBOX_DISTRO=rhel],
+        [*ubuntu*],          [TOOLBOX_DISTRO=ubuntu])
 AC_SUBST([TOOLBOX_DISTRO])
 AC_SUBST([TOOLBOX_NAME], [$TOOLBOX_DISTRO-toolbox])
 
@@ -139,11 +140,12 @@ QH_VAR_ENSURE([VM_SYNCED_FOLDER_MOUNT],
               [/vagrant])
 
 AS_CASE([$VM_BOX_NAME],
-        [alpine*], [VM_DISTRO=alpine],
-        [centos*|stream*], [VM_DISTRO=centos],
-        [debian*], [VM_DISTRO=debian],
+        [alpine*],              [VM_DISTRO=alpine],
+        [centos*|stream*],      [VM_DISTRO=centos],
+        [debian*],              [VM_DISTRO=debian],
         [fedora*|*-cloud-base], [VM_DISTRO=fedora],
-        [ubuntu*], [VM_DISTRO=ubuntu])
+        [rhel*],                [VM_DISTRO=rhel],
+        [ubuntu*],              [VM_DISTRO=ubuntu])
 AC_SUBST([VM_DISTRO])
 
 AC_CONFIG_FILES([Makefile

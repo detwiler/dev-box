@@ -23,6 +23,14 @@ case $ID in
         conan-package-tools
         "
         ;;
+    rhel)
+        pkgs_common="
+        $pkgs_common
+        awscli
+        black
+        conan-package-tools
+        "
+        ;;
 esac
 
 python3 -m pip install --upgrade $pkgs_common
