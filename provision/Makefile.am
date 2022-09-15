@@ -18,11 +18,13 @@ extra_static_sources = package-install-alpine \
 		       package-install-centos \
 		       package-install-debian \
 		       package-install-fedora \
+		       package-install-rhel \
 		       package-install-ubuntu \
 		       package-upgrade-alpine \
 		       package-upgrade-centos \
 		       package-upgrade-debian \
 		       package-upgrade-fedora \
+		       package-upgrade-rhel \
 		       package-upgrade-ubuntu
 
 EXTRA_DIST = $(extra_static_sources)
